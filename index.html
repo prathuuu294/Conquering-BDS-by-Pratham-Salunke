@@ -254,10 +254,10 @@
       <!-- Brand Logo + Title -->
       <a href="#top" class="flex items-center gap-3.5 group shrink-0">
         <div class="relative w-12 h-12 rounded-full overflow-hidden border border-clinical-400/55 shadow-lg shadow-clinical-400/25 bg-obsidian flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-          <!-- Replace src with "logo.png" when uploading to GitHub Pages -->
+          <!-- Replace src with "./logo.png?v=3" when uploading to GitHub Pages -->
           <img
             id="brand-logo-header"
-            src="logo.png"
+            src="./logo.png?v=3"
             alt="Conquering BDS Logo"
             class="w-full h-full object-cover"
           />
@@ -382,7 +382,7 @@
               <div class="w-52 h-52 sm:w-56 sm:h-56 rounded-full overflow-hidden border-2 border-clinical-400/55 shadow-[0_0_45px_rgba(56,189,248,0.28)] animate-float bg-obsidian">
                 <img
                   id="brand-logo-hero"
-                  src="logo.png"
+                  src="./logo.png?v=3"
                   alt="Conquering BDS Crest"
                   class="w-full h-full object-cover"
                 />
@@ -651,7 +651,7 @@
             <div class="w-12 h-12 rounded-full overflow-hidden border border-clinical-400/50 bg-obsidian">
               <img
                 id="brand-logo-footer"
-                src="logo.png"
+                src="./logo.png?v=3"
                 alt="Conquering BDS Logo"
                 class="w-full h-full object-cover"
               />
@@ -2078,7 +2078,7 @@
       const logoSrc =
         (document.getElementById("brand-logo-header") &&
           document.getElementById("brand-logo-header").src) ||
-        "logo.png";
+        "./logo.png?v=3";
 
       const rawFigures = Array.isArray(data.figures) ? data.figures : [];
       const [logoDataUrl, loadedFigures] = await Promise.all([
