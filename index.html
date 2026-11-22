@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conquering BDS — by Pratham Salunke | Luxury Dental Knowledge Platform</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            obsidian: '#04070D',
+            midnight: '#09111F',
+            gold: {
+              300: '#F5DF9A',
+              400: '#E5C158',
+              500: '#D4AF37',
+              600: '#B58E22'
+            },
+            clinical: {
+              300: '#7DD3FC',
+              400: '#38BDF8',
+              500: '#06B6D4'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --bg-obsidian: #04070D;
+      --gold: #D4AF37;
+      --gold-soft: #F5DF9A;
+      --cyan: #38BDF8;
+      --glass-bg: rgba(11, 18, 32, 0.62);
+      --glass-border: rgba(212, 175, 55, 0.22);
+      --glass-cyan-border: rgba(56, 189, 248, 0.24);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-obsidian);
+      color: #ECF2F8;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Ambient Luxury Dental Mesh Background */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 65% 50% at 15% 12%, rgba(56, 189, 248, 0.14), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 85% 18%, rgba(212, 175, 55, 0.14), transparent 58%),
+        radial-gradient(ellipse 60% 50% at 50% 92%, rgba(6, 182, 212, 0.10), transparent 60%),
+        linear-gradient(180deg, #04070D 0%, #070D19 50%, #03060B 100%);
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(212, 175, 55, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 30%, black 35%, transparent 85%);
+    }
+
+    /* Scroll Progress Bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      z-index: 60;
+      background: linear-gradient(90deg, #38BDF8, #D4AF37, #F5DF9A);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.7);
+      transition: width 0.08s linear;
+    }
+
+    /* Glassmorphism Surfaces */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 20px 50px -20px rgba(0, 0, 0, 0.85),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(212, 175, 55, 0.09),
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+
+    .glass-panel:hover::before {
+      opacity: 1;
+    }
+
+    .glass-card-hover:hover {
+      transform: translateY(-5px);
+      border-color: rgba(212, 175, 55, 0.52);
+      box-shadow:
+        0 24px 60px -18px rgba(0, 0, 0, 0.9),
+        0 0 28px -8px rgba(56, 189, 248, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+
+    .glass-nav {
+      background: rgba(4, 7, 13, 0.74);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+    }
+
+    /* Typography Gradients */
+    .text-luxury-gradient {
+      background: linear-gradient(135deg, #FFF7D6 0%, #E5C158 42%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #FFF3C4 0%, #D4AF37 55%, #F5DF9A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Interactive Shimmer Buttons */
+    .btn-luxury {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #E5C158 0%, #D4AF37 55%, #B58E22 100%);
+      color: #05080F;
+      font-weight: 700;
+      box-shadow: 0 10px 30px -8px rgba(212, 175, 55, 0.55);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+
+    .btn-luxury::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -80%;
+      width: 55%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      transform: rotate(24deg);
+      transition: left 0.65s ease;
+      pointer-events: none;
+    }
+
+    .btn-luxury:hover::after { left: 135%; }
+    .btn-luxury:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(212, 175, 55, 0.72);
+    }
+    .btn-luxury:active { transform: scale(0.97); }
+
+    .btn-glass {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      color: #E2E8F0;
+      backdrop-filter: blur(12px);
+      transition: all 0.22s ease;
+    }
+    .btn-glass:hover {
+      border-color: rgba(212, 175, 55, 0.6);
+      background: rgba(212, 175, 55, 0.12);
+      color: #FFF7D6;
+      transform: translateY(-2px);
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px) scale(0.985);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Floating Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.06); }
+    }
+    .animate-float { animation: floatSlow 5.5s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+
+    /* Interactive Tooth SVG Layer Highlight */
+    .tooth-zone {
+      cursor: pointer;
+      transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+    }
+    .tooth-zone:hover, .tooth-zone.active-zone {
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.85));
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #04070D; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.55), rgba(56, 189, 248, 0.45));
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-300">
+  <div id="scroll-progress"></div>
+  <div class="ambient-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- STICKY GLASSMORPHIC HEADER -->
+  <header class="glass-nav sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <!-- Brand Logo + Title -->
+      <a href="#top" class="flex items-center gap-3.5 group shrink-0">
+        <div class="relative w-12 h-12 rounded-full overflow-hidden border border-clinical-400/55 shadow-lg shadow-clinical-400/25 bg-obsidian flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          <!-- Replace src with "logo.png" when uploading to GitHub Pages -->
+          <img
+            id="brand-logo-header"
+            src="logo.png"
+            alt="Conquering BDS Logo"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="leading-tight">
+          <div class="font-display font-bold text-base sm:text-lg tracking-wider text-gold-gradient">
+            CONQUERING BDS
+          </div>
+          <div class="text-[11px] font-medium tracking-widest uppercase text-clinical-300/80">
+            by Pratham Salunke
+          </div>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#oracle" class="hover:text-gold-300 transition-colors">AI Oracle</a>
+        <a href="#curriculum" class="hover:text-gold-300 transition-colors">4-Year Subjects</a>
+        <a href="#anatomy-lab" class="hover:text-gold-300 transition-colors">Interactive Tooth</a>
+        <a href="#architecture" class="hover:text-gold-300 transition-colors">How It Works</a>
+      </nav>
+
+      <!-- Header Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button
+          id="btn-bookmarks"
+          type="button"
+          class="btn-glass px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2"
+          title="Saved High-Yield Topics"
+        >
+          <span>Saved</span>
+          <span id="bookmark-count" class="px-1.5 py-0.5 rounded-md bg-gold-500/20 text-gold-300 font-mono text-[11px]">0</span>
+        </button>
+
+        <button
+          id="btn-settings"
+          type="button"
+          class="btn-luxury px-4 py-2 rounded-xl text-xs tracking-wide flex items-center gap-2"
+        >
+          <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-950 ring-2 ring-emerald-900"></span>
+          <span>Backend &amp; Logo</span>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="btn-mobile-menu"
+          type="button"
+          class="md:hidden btn-glass p-2 rounded-xl text-slate-200"
+          aria-label="Toggle Menu"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gold-500/15 bg-obsidian/95 backdrop-blur-xl px-4 py-3 space-y-2 text-sm">
+      <a href="#oracle" class="mobile-nav-link block py-2 px-3 rounded-lg hover:bg-white/5 text-slate-200">AI Oracle</a>
+      <a href="#curriculum" class="mobile-nav-link block py-2 px-3 rounded-lg hover:bg-white/5 text-slate-200">4-Year Subjects</a>
+      <a href="#anatomy-lab" class="mobile-nav-link block py-2 px-3 rounded-lg hover:bg-white/5 text-slate-200">Interactive Tooth</a>
+      <a href="#architecture" class="mobile-nav-link block py-2 px-3 rounded-lg hover:bg-white/5 text-slate-200">How It Works</a>
+    </div>
+  </header>
+
+  <main id="top" class="relative z-10">
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-16 lg:pb-14">
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6 reveal">
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-300 text-xs font-semibold tracking-wider uppercase">
+            <span class="w-2 h-2 rounded-full bg-clinical-400 animate-pulse"></span>
+            <span>All 4 BDS Years &bull; Standardized Textbook RAG &bull; $0 Architecture</span>
+          </div>
+
+          <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.12] tracking-tight">
+            Master Every <span class="text-luxury-gradient">BDS Subject</span> With Textbook Precision.
+          </h1>
+
+          <p class="text-slate-300/90 text-base sm:text-lg leading-relaxed max-w-2xl">
+            Your one-stop dental knowledge sanctuary—built for university exams, viva voce, clinical postings, and textbook diagram mastery across all four years of BDS.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3.5 pt-1">
+            <a href="#oracle" class="btn-luxury px-6 py-3.5 rounded-2xl text-sm inline-flex items-center gap-2">
+              <span>Launch BDS Oracle</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+            <a href="#curriculum" class="btn-glass px-6 py-3.5 rounded-2xl text-sm font-semibold inline-flex items-center gap-2">
+              <span>Explore 4-Year Subjects</span>
+            </a>
+          </div>
+
+          <!-- Compact Metric Strip -->
+          <div class="grid grid-cols-3 gap-3 pt-4 max-w-lg">
+            <div class="glass-panel rounded-2xl p-3.5 text-center">
+              <div class="font-display text-2xl font-bold text-gold-300">4</div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">BDS Years</div>
+            </div>
+            <div class="glass-panel rounded-2xl p-3.5 text-center">
+              <div class="font-display text-2xl font-bold text-clinical-300">19</div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Core Subjects</div>
+            </div>
+            <div class="glass-panel rounded-2xl p-3.5 text-center">
+              <div class="font-display text-2xl font-bold text-gold-300">5</div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Study Modes</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Visual Showcase Card -->
+        <div class="lg:col-span-5 reveal" style="transition-delay: 120ms;">
+          <div class="glass-panel rounded-3xl p-6 sm:p-7 border-gold-500/35 relative">
+            <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-clinical-400/20 blur-3xl animate-pulse-glow pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gold-500/20 blur-3xl animate-pulse-glow pointer-events-none"></div>
+
+            <div class="relative flex flex-col items-center text-center space-y-5">
+              <div class="w-52 h-52 sm:w-56 sm:h-56 rounded-full overflow-hidden border-2 border-clinical-400/55 shadow-[0_0_45px_rgba(56,189,248,0.28)] animate-float bg-obsidian">
+                <img
+                  id="brand-logo-hero"
+                  src="logo.png"
+                  alt="Conquering BDS Crest"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div>
+                <div class="font-display text-xl font-bold text-gold-gradient tracking-wider">CONQUERING BDS</div>
+                <p class="text-xs text-slate-400 mt-1">
+                  Learn &bull; Study &bull; Revise &bull; Excel
+                </p>
+              </div>
+
+              <div class="w-full grid grid-cols-2 gap-2.5 text-left">
+                <div class="rounded-xl bg-white/[0.04] border border-white/10 p-3">
+                  <div class="text-[10px] font-mono uppercase tracking-wider text-clinical-300">Search Engine</div>
+                  <div class="text-xs font-semibold text-slate-100 mt-0.5">SQLite FTS5 + Cache</div>
+                </div>
+                <div class="rounded-xl bg-white/[0.04] border border-white/10 p-3">
+                  <div class="text-[10px] font-mono uppercase tracking-wider text-gold-300">Visual Grounding</div>
+                  <div class="text-xs font-semibold text-slate-100 mt-0.5">Book WebP Figures</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI ORACLE COMMAND CENTER -->
+    <section id="oracle" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="glass-panel rounded-3xl p-5 sm:p-8 border-gold-500/30 reveal">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-widest text-clinical-300">Clinical Knowledge Engine</span>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Ask the BDS Textbook Oracle</h2>
+          </div>
+          <div id="mode-status-pill" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-clinical-400/10 border border-clinical-400/30 text-clinical-300 text-xs font-medium self-start md:self-auto">
+            <span class="w-2 h-2 rounded-full bg-clinical-400"></span>
+            <span>Interactive Preview Mode (Sample Textbooks Loaded)</span>
+          </div>
+        </div>
+
+        <!-- Filters + Query Form -->
+        <form id="oracle-form" class="space-y-4">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-12 gap-3">
+            <!-- BDS Year Selector -->
+            <div class="lg:col-span-3">
+              <label for="select-year" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1.5">BDS Year</label>
+              <select
+                id="select-year"
+                class="w-full rounded-xl bg-obsidian/85 border border-gold-500/25 px-3.5 py-3 text-sm text-slate-100 focus:outline-none focus:border-clinical-400 transition"
+              >
+                <option value="all">All 4 BDS Years</option>
+                <option value="1">1st Year BDS</option>
+                <option value="2">2nd Year BDS</option>
+                <option value="3">3rd Year BDS</option>
+                <option value="4">4th (Final) Year BDS</option>
+              </select>
+            </div>
+
+            <!-- Subject Selector -->
+            <div class="lg:col-span-4">
+              <label for="select-subject" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1.5">Subject</label>
+              <select
+                id="select-subject"
+                class="w-full rounded-xl bg-obsidian/85 border border-gold-500/25 px-3.5 py-3 text-sm text-slate-100 focus:outline-none focus:border-clinical-400 transition"
+              ></select>
+            </div>
+
+            <!-- Topic Input -->
+            <div class="sm:col-span-2 lg:col-span-5">
+              <label for="oracle-input" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1.5">Topic, Question, or Diagram Request</label>
+              <div class="flex gap-2">
+                <input
+                  id="oracle-input"
+                  type="text"
+                  placeholder="e.g., Ameloblastoma histopathology, G.V. Black classification..."
+                  class="flex-1 min-w-0 rounded-xl bg-obsidian/85 border border-gold-500/25 px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-gold-400 transition"
+                />
+                <button type="submit" class="btn-luxury px-5 py-3 rounded-xl text-sm shrink-0">
+                  Search
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Study Mode Pills -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 mr-1">Study Mode:</span>
+            <button type="button" data-mode="concept" class="mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border transition">Concept Deep-Dive</button>
+            <button type="button" data-mode="exam" class="mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border transition">LAQ / SAQ Exam</button>
+            <button type="button" data-mode="viva" class="mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border transition">Clinical &amp; Viva</button>
+            <button type="button" data-mode="mcq" class="mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border transition">MCQ Drill</button>
+            <button type="button" data-mode="images" class="mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border transition">Textbook Figures</button>
+          </div>
+
+          <!-- Quick High-Yield Prompt Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="text-[11px] text-slate-400">Try high-yield topics:</span>
+            <button type="button" data-topic="Ameloblastoma" class="quick-chip text-xs px-3 py-1 rounded-lg bg-white/[0.04] border border-white/10 hover:border-gold-400/60 hover:text-gold-300 transition">Ameloblastoma</button>
+            <button type="button" data-topic="G.V. Black's Classification of Dental Caries" class="quick-chip text-xs px-3 py-1 rounded-lg bg-white/[0.04] border border-white/10 hover:border-gold-400/60 hover:text-gold-300 transition">G.V. Black's Classification</button>
+            <button type="button" data-topic="Inferior Alveolar Nerve Block" class="quick-chip text-xs px-3 py-1 rounded-lg bg-white/[0.04] border border-white/10 hover:border-gold-400/60 hover:text-gold-300 transition">Inferior Alveolar Nerve Block</button>
+            <button type="button" data-topic="Kennedy's Classification of Partially Edentulous Arches" class="quick-chip text-xs px-3 py-1 rounded-lg bg-white/[0.04] border border-white/10 hover:border-gold-400/60 hover:text-gold-300 transition">Kennedy's Classification</button>
+          </div>
+        </form>
+
+        <!-- Loading State -->
+        <div id="oracle-loading" class="hidden mt-8 py-10 text-center space-y-3">
+          <div class="w-10 h-10 mx-auto rounded-full border-2 border-gold-500/30 border-t-clinical-400 animate-spin"></div>
+          <p class="text-sm text-slate-300 font-medium">Searching textbook index &amp; retrieving figures...</p>
+        </div>
+
+        <!-- Oracle Result Container -->
+        <div id="oracle-result" class="mt-8 border-t border-gold-500/20 pt-7"></div>
+      </div>
+    </section>
+
+    <!-- ALL 4 BDS YEARS CURRICULUM MENU -->
+    <section id="curriculum" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 reveal">
+        <div>
+          <span class="text-[11px] font-mono uppercase tracking-widest text-gold-300">Complete DCI Syllabus Hierarchy</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-1">All 4 BDS Years &amp; Subjects</h2>
+        </div>
+
+        <!-- Interactive Year Filter Tabs -->
+        <div class="flex flex-wrap gap-2" id="year-tabs">
+          <button type="button" data-year="1" class="year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border transition">1st Year</button>
+          <button type="button" data-year="2" class="year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border transition">2nd Year</button>
+          <button type="button" data-year="3" class="year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border transition">3rd Year</button>
+          <button type="button" data-year="4" class="year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border transition">Final (4th) Year</button>
+        </div>
+      </div>
+
+      <!-- Subject Cards Grid -->
+      <div id="subjects-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal"></div>
+    </section>
+
+    <!-- INTERACTIVE DENTISTRY OBJECT: TOOTH ANATOMY EXPLORER -->
+    <section id="anatomy-lab" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="glass-panel rounded-3xl p-6 sm:p-10 border-clinical-400/25 reveal">
+        <div class="grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-5 flex flex-col items-center">
+            <span class="text-[11px] font-mono uppercase tracking-widest text-clinical-300 mb-3">Interactive Dental Explorer</span>
+            <div class="w-64 h-72 relative flex items-center justify-center">
+              <!-- Sleek Interactive SVG Molar Cross-Section -->
+              <svg viewBox="0 0 240 270" class="w-full h-full drop-shadow-[0_0_24px_rgba(56,189,248,0.22)]">
+                <defs>
+                  <linearGradient id="enamelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#F8FAFC" />
+                    <stop offset="55%" stop-color="#CBD5E1" />
+                    <stop offset="100%" stop-color="#94A3B8" />
+                  </linearGradient>
+                  <linearGradient id="dentinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#F5DF9A" />
+                    <stop offset="100%" stop-color="#B58E22" />
+                  </linearGradient>
+                  <linearGradient id="pulpGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#38BDF8" />
+                    <stop offset="100%" stop-color="#0284C7" />
+                  </linearGradient>
+                </defs>
+                <!-- Alveolar Bone / Periodontium Aura -->
+                <path
+                  id="zone-periodontium"
+                  data-layer="periodontium"
+                  class="tooth-zone"
+                  d="M36 142 C36 225, 68 258, 120 258 C172 258, 204 225, 204 142 C188 150, 174 145, 168 138 L72 138 C66 145, 52 150, 36 142 Z"
+                  fill="rgba(56, 189, 248, 0.14)"
+                  stroke="#38BDF8"
+                  stroke-width="1.8"
+                  stroke-dasharray="4 3"
+                />
+                <!-- Enamel Crown -->
+                <path
+                  id="zone-enamel"
+                  data-layer="enamel"
+                  class="tooth-zone active-zone"
+                  d="M52 118 C42 74, 58 26, 94 28 C108 29, 114 40, 120 40 C126 40, 132 29, 146 28 C182 26, 198 74, 188 118 C182 134, 166 138, 152 136 L88 136 C74 138, 58 134, 52 118 Z"
+                  fill="url(#enamelGrad)"
+                  stroke="#F5DF9A"
+                  stroke-width="2"
+                />
+                <!-- Dentin & Roots -->
+                <path
+                  id="zone-dentin"
+                  data-layer="dentin"
+                  class="tooth-zone"
+                  d="M68 112 C62 82, 74 48, 98 50 C110 51, 115 58, 120 58 C125 58, 130 51, 142 50 C166 48, 178 82, 172 112 L166 148 C164 195, 156 238, 142 242 C131 245, 126 196, 120 176 C114 196, 109 245, 98 242 C84 238, 76 195, 74 148 Z"
+                  fill="url(#dentinGrad)"
+                  stroke="#FFF7D6"
+                  stroke-width="1.4"
+                />
+                <!-- Pulp Chamber & Root Canals -->
+                <path
+                  id="zone-pulp"
+                  data-layer="pulp"
+                  class="tooth-zone"
+                  d="M90 106 C90 86, 102 76, 112 82 L120 87 L128 82 C138 76, 150 86, 150 106 C150 124, 142 136, 140 162 L139 224 C139 229, 134 229, 133 222 L129 156 C126 142, 114 142, 111 156 L107 222 C106 229, 101 229, 101 224 L100 162 C98 136, 90 124, 90 106 Z"
+                  fill="url(#pulpGrad)"
+                  stroke="#E0F2FE"
+                  stroke-width="1.4"
+                />
+              </svg>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">Click any anatomical layer to inspect high-yield BDS pearls</p>
+          </div>
+
+          <div class="lg:col-span-7 space-y-5">
+            <div>
+              <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Interactive Tooth Structure Pearls</h2>
+              <p class="text-sm text-slate-400 mt-1">Switch layers to revise Oral Histology, Dental Materials &amp; Endodontic essentials.</p>
+            </div>
+
+            <div class="flex flex-wrap gap-2" id="layer-buttons">
+              <button type="button" data-layer="enamel" class="layer-btn px-4 py-2 rounded-xl text-xs font-bold border transition">Enamel</button>
+              <button type="button" data-layer="dentin" class="layer-btn px-4 py-2 rounded-xl text-xs font-bold border transition">Dentin</button>
+              <button type="button" data-layer="pulp" class="layer-btn px-4 py-2 rounded-xl text-xs font-bold border transition">Dental Pulp</button>
+              <button type="button" data-layer="periodontium" class="layer-btn px-4 py-2 rounded-xl text-xs font-bold border transition">Periodontium</button>
+            </div>
+
+            <div id="layer-detail-card" class="rounded-2xl bg-obsidian/70 border border-gold-500/25 p-5 space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- $0 ARCHITECTURE SECTION -->
+    <section id="architecture" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="text-center max-w-2xl mx-auto mb-10 reveal">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-gold-300">Zero-Cost Engineering</span>
+        <h2 class="font-display text-3xl font-bold text-white mt-1">Powered by Your Standardized Textbooks</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5 reveal">
+        <div class="glass-panel glass-card-hover rounded-2xl p-6 space-y-2.5">
+          <div class="text-xs font-mono text-clinical-300">01 &bull; LOCAL INDEXER</div>
+          <h3 class="font-display text-lg font-bold text-gold-300">PDF Text + WebP Figures</h3>
+          <p class="text-sm text-slate-300/85 leading-relaxed">
+            Compresses 1.88 GB of dental PDFs into a fast SQLite FTS5 text database plus lightweight WebP textbook diagrams with page captions.
+          </p>
+        </div>
+        <div class="glass-panel glass-card-hover rounded-2xl p-6 space-y-2.5">
+          <div class="text-xs font-mono text-clinical-300">02 &bull; PYTHONANYWHERE API</div>
+          <h3 class="font-display text-lg font-bold text-gold-300">Instant FTS5 + Answer Cache</h3>
+          <p class="text-sm text-slate-300/85 leading-relaxed">
+            Retrieves exact textbook paragraphs in under 50 ms, caches repeat syllabus questions for instant load, and pairs with Gemini Flash.
+          </p>
+        </div>
+        <div class="glass-panel glass-card-hover rounded-2xl p-6 space-y-2.5">
+          <div class="text-xs font-mono text-clinical-300">03 &bull; GITHUB PAGES UI</div>
+          <h3 class="font-display text-lg font-bold text-gold-300">Always-Free Student Portal</h3>
+          <p class="text-sm text-slate-300/85 leading-relaxed">
+            Served globally via GitHub Pages with split year-wise WebP image repositories so students see diagrams beside every clinical answer.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LUXURY FOOTER -->
+  <footer class="relative z-10 border-t border-gold-500/20 bg-obsidian/90 backdrop-blur-xl mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-12 gap-8 items-start">
+        <div class="md:col-span-5 space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full overflow-hidden border border-clinical-400/50 bg-obsidian">
+              <img
+                id="brand-logo-footer"
+                src="logo.png"
+                alt="Conquering BDS Logo"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <div class="font-display font-bold text-base text-gold-gradient tracking-wider">CONQUERING BDS</div>
+              <div class="text-[11px] text-clinical-300/80 uppercase tracking-widest">by Pratham Salunke</div>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            An all-inclusive dental knowledge platform uniting all four years of BDS textbooks, clinical correlations, exam answers, and visual diagrams.
+          </p>
+        </div>
+
+        <div class="md:col-span-3 space-y-2">
+          <div class="text-xs font-mono uppercase tracking-wider text-gold-300">BDS Curriculum</div>
+          <ul class="space-y-1.5 text-xs text-slate-400">
+            <li><a href="#curriculum" data-footer-year="1" class="footer-year-link hover:text-gold-300 transition">1st Year BDS</a></li>
+            <li><a href="#curriculum" data-footer-year="2" class="footer-year-link hover:text-gold-300 transition">2nd Year BDS</a></li>
+            <li><a href="#curriculum" data-footer-year="3" class="footer-year-link hover:text-gold-300 transition">3rd Year BDS</a></li>
+            <li><a href="#curriculum" data-footer-year="4" class="footer-year-link hover:text-gold-300 transition">Final (4th) Year BDS</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-4 space-y-2">
+          <div class="text-xs font-mono uppercase tracking-wider text-gold-300">Platform Notes</div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Built for academic revision and exam preparation. Always cross-verify clinical protocols and drug dosages with standard textbooks and faculty guidance.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+        <div>&copy; 2026 Conquering BDS by Pratham Salunke. All rights reserved.</div>
+        <div class="font-mono text-slate-400">GitHub Pages &bull; PythonAnywhere &bull; SQLite FTS5 &bull; Gemini AI</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BACKEND & LOGO SETTINGS MODAL -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-lg w-full p-6 sm:p-7 border-gold-500/40 space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-xl font-bold text-gold-300">Backend &amp; Custom Logo</h3>
+        <button id="close-settings" type="button" class="text-slate-400 hover:text-white p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div>
+          <label for="input-backend-url" class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">
+            PythonAnywhere API Endpoint (HTTPS)
+          </label>
+          <input
+            id="input-backend-url"
+            type="url"
+            placeholder="https://yourusername.pythonanywhere.com/api/bds-oracle"
+            class="w-full rounded-xl bg-obsidian/90 border border-gold-500/30 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-clinical-400"
+          />
+          <p class="text-[11px] text-slate-400 mt-1.5">
+            Leave blank to stay in Interactive Preview Mode with built-in BDS sample topics.
+          </p>
+        </div>
+
+        <div>
+          <label for="input-logo-upload" class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">
+            Preview Your Own Logo Image
+          </label>
+          <input
+            id="input-logo-upload"
+            type="file"
+            accept="image/*"
+            class="w-full text-xs text-slate-300 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:bg-gold-500/20 file:text-gold-300 file:font-semibold hover:file:bg-gold-500/30 cursor-pointer"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button id="btn-reset-demo" type="button" class="btn-glass px-4 py-2 rounded-xl text-xs font-semibold">
+          Use Preview Mode
+        </button>
+        <button id="btn-save-settings" type="button" class="btn-luxury px-5 py-2 rounded-xl text-xs">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKMARKS DRAWER MODAL -->
+  <div id="bookmarks-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-lg w-full p-6 border-gold-500/35 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-xl font-bold text-gold-300">Saved High-Yield Topics</h3>
+        <button id="close-bookmarks" type="button" class="text-slate-400 hover:text-white p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="bookmarks-list" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- FIGURE LIGHTBOX MODAL -->
+  <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-3xl w-full p-5 sm:p-6 border-clinical-400/40 space-y-4">
+      <div class="flex items-center justify-between gap-4">
+        <div id="lightbox-title" class="font-display text-base sm:text-lg font-bold text-gold-300"></div>
+        <button id="close-lightbox" type="button" class="text-slate-400 hover:text-white p-1 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="lightbox-media" class="rounded-2xl bg-obsidian/90 border border-white/10 p-4 flex items-center justify-center max-h-[65vh] overflow-auto"></div>
+      <div id="lightbox-caption" class="text-xs text-slate-300 leading-relaxed"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 rounded-2xl bg-midnight/95 border border-gold-500/45 text-xs font-semibold text-gold-300 shadow-2xl"></div>
+
+  <script>
+    // =========================================================================
+    // 1. ALL 4 BDS YEARS CURRICULUM DATA (STANDARD DCI SYLLABUS)
+    // =========================================================================
+    const BDS_CURRICULUM = {
+      "1": {
+        label: "1st Year BDS",
+        subtitle: "Foundational Medical & Dental Sciences",
+        subjects: [
+          {
+            id: "anatomy",
+            name: "General Human Anatomy",
+            short: "Head, Neck, Embryology & Osteology",
+            books: "B.D. Chaurasia • Gray's • Inderbir Singh",
+            topics: ["Trigeminal Nerve (CN V)", "Temporomandibular Joint (TMJ)", "Muscles of Mastication", "Facial Artery & Parotid Gland"]
+          },
+          {
+            id: "physiology_biochem",
+            name: "Physiology & Biochemistry",
+            short: "Systemic Physiology, Saliva & Calcium Metabolism",
+            books: "Sembulingam • Satyanarayana",
+            topics: ["Composition & Functions of Saliva", "Calcium & Phosphate Homeostasis", "Coagulation Cascade", "Pain Pathways"]
+          },
+          {
+            id: "dadh",
+            name: "Dental Anatomy & Oral Histology",
+            short: "Tooth Morphology, Odontogenesis & Oral Mucosa",
+            books: "Wheeler's • Orbans • Tencate's",
+            topics: ["Stages of Tooth Development", "Structure of Enamel & Dentin", "Chronology of Tooth Eruption", "Pulp-Dentin Complex"]
+          }
+        ]
+      },
+      "2": {
+        label: "2nd Year BDS",
+        subtitle: "Pathology, Pharmacology & Dental Biomaterials",
+        subjects: [
+          {
+            id: "path_micro",
+            name: "General Pathology & Microbiology",
+            short: "Inflammation, Neoplasia, Oral Flora & Sterilization",
+            books: "Harsh Mohan • Ananthanarayan",
+            topics: ["Acute vs Chronic Inflammation", "Wound Healing", "Autoclave & Sterilization", "Streptococcus Mutans & Biofilm"]
+          },
+          {
+            id: "pharma",
+            name: "General & Dental Pharmacology",
+            short: "Local Anesthetics, NSAIDs & Dental Antibiotics",
+            books: "K.D. Tripathi",
+            topics: ["Mechanism of Local Anesthetics", "Prophylactic Antibiotics in Dentistry", "NSAIDs & Analgesics", "Medical Emergencies in Dental Chair"]
+          },
+          {
+            id: "dental_materials",
+            name: "Dental Materials",
+            short: "Impression Materials, Composites, GIC & Alloys",
+            books: "Phillips' Science of Dental Materials",
+            topics: ["Glass Ionomer Cement (GIC)", "Composite Resins & Bonding", "Alginate & Elastomeric Impressions", "Dental Amalgam & Casting Alloys"]
+          },
+          {
+            id: "preclinical",
+            name: "Pre-Clinical Prostho & Conservative",
+            short: "Cavity Preparation & Complete Denture Lab Steps",
+            books: "Sturdevant • Zarb-Bolender",
+            topics: ["G.V. Black's Classification of Dental Caries", "Principles of Cavity Preparation", "Jaw Relations & Articulators", "Teeth Arrangement"]
+          }
+        ]
+      },
+      "3": {
+        label: "3rd Year BDS",
+        subtitle: "Clinical Medicine, Surgery & Oral Pathology",
+        subjects: [
+          {
+            id: "gen_medicine",
+            name: "General Medicine",
+            short: "Cardiology, Diabetes, Bleeding Disorders & Dental Management",
+            books: "Davidson's • Alagappan",
+            topics: ["Infective Endocarditis Prophylaxis", "Dental Management of Diabetic Patients", "Hypertension & Syncope", "Hepatitis B & HIV Precautions"]
+          },
+          {
+            id: "gen_surgery",
+            name: "General Surgery",
+            short: "Ulcers, Swellings, Shock, Trauma & Salivary Glands",
+            books: "S. Das • Bailey & Love",
+            topics: ["Classification of Ulcers & Cysts", "Hemorrhage & Shock Management", "Neck Swellings & Lymphadenopathy", "Tracheostomy & Airway"]
+          },
+          {
+            id: "oral_path",
+            name: "Oral Pathology & Oral Microbiology",
+            short: "Odontogenic Tumors, Cysts, OPMDs & Oral Cancer",
+            books: "Shafer's • Neville's",
+            topics: ["Ameloblastoma", "Odontogenic Keratocyst (OKC)", "Oral Submucous Fibrosis (OSMF)", "Squamous Cell Carcinoma"]
+          }
+        ]
+      },
+      "4": {
+        label: "4th (Final) Year BDS",
+        subtitle: "All 8 Clinical Dental Specialties",
+        subjects: [
+          {
+            id: "omr",
+            name: "Oral Medicine & Radiology",
+            short: "Oral Lesions, Red-White Lesions & Dental Imaging",
+            books: "Burket's • White & Pharoah",
+            topics: ["Lichen Planus & Pemphigus Vulgaris", "IOPA & OPG Principles", "CBCT in Dentistry", "Differential Diagnosis of Radiolucencies"]
+          },
+          {
+            id: "omfs",
+            name: "Oral & Maxillofacial Surgery",
+            short: "Exodontia, LA Blocks, Impactions & Maxillofacial Trauma",
+            books: "Neelima Malik • Malamed",
+            topics: ["Inferior Alveolar Nerve Block", "Winter's & Pell-Gregory Impaction", "Le Fort Fractures", "Ludwig's Angina"]
+          },
+          {
+            id: "prostho",
+            name: "Prosthodontics & Crown and Bridge",
+            short: "Complete Dentures, RPD, FPD & Dental Implants",
+            books: "Boucher • McCracken • Shillingburg",
+            topics: ["Kennedy's Classification of Partially Edentulous Arches", "Retention & Stability in CD", "FPD Tooth Preparation", "Osseointegration in Implants"]
+          },
+          {
+            id: "cons_endo",
+            name: "Conservative Dentistry & Endodontics",
+            short: "Cariology, Aesthetics, Access Opening & Obturation",
+            books: "Sturdevant • Grossman • Cohen",
+            topics: ["G.V. Black's Classification of Dental Caries", "Access Cavity Preparation", "Working Length Determination", "Root Canal Irrigants & Obturation"]
+          },
+          {
+            id: "perio",
+            name: "Periodontology",
+            short: "Gingivitis, Periodontitis, Flaps & Regenerative Therapy",
+            books: "Newman & Carranza",
+            topics: ["2017 AAP Periodontal Classification", "Periodontal Pocket & Bone Loss", "Scaling & Root Planing", "Mucogingival & Flap Surgery"]
+          },
+          {
+            id: "ortho",
+            name: "Orthodontics & Dentofacial Orthopedics",
+            short: "Growth & Development, Angle's Classification & Appliances",
+            books: "Proffit • Bhalajhi",
+            topics: ["Angle's Classification of Malocclusion", "Cephalometric Landmarks (Steiner's)", "Anchorage in Orthodontics", "Retention & Relapse"]
+          },
+          {
+            id: "pedo",
+            name: "Pediatric & Preventive Dentistry",
+            short: "Behavior Management, Pulp Therapy & Space Maintainers",
+            books: "Tandon • McDonald & Avery",
+            topics: ["Pulpotomy vs Pulpectomy", "Space Maintainers", "Frankl's Behavior Rating Scale", "Early Childhood Caries (ECC)"]
+          },
+          {
+            id: "phd",
+            name: "Public Health Dentistry",
+            short: "Epidemiology, Indices, Fluorides & Preventive Programs",
+            books: "Soben Peter",
+            topics: ["DMFT & OHI-S Indices", "Water Fluoridation & Mechanism", "Levels of Prevention", "Biostatistics & Study Designs"]
+          }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // 2. INTERACTIVE TOOTH LAYER CLINICAL PEARLS
+    // =========================================================================
+    const TOOTH_LAYERS = {
+      enamel: {
+        title: "Enamel — Hardest Biologic Tissue",
+        badge: "Ectodermal Origin • 96% Inorganic Hydroxyapatite",
+        points: [
+          "Formed by ameloblasts; completely acellular and cannot regenerate after eruption.",
+          "Incremental lines: Striae of Retzius (and Neonatal Line in deciduous teeth & 1st permanent molars).",
+          "Clinical pearl: Phosphoric acid (37%) selectively etches enamel prism cores/peripheries for resin bonding."
+        ],
+        ref: "Orbans Oral Histology • Ch. 3"
+      },
+      dentin: {
+        title: "Dentin — Living Resilient Core",
+        badge: "Ectomesenchymal Origin • 70% Inorganic",
+        points: [
+          "Formed by odontoblasts lining the pulp; contains dentinal tubules (~15,000–45,000/mm²).",
+          "Hydrodynamic Theory (Brännström) explains dentinal hypersensitivity via fluid movement in tubules.",
+          "Clinical pearl: Smear layer forms during cavity prep and must be modified or removed for dentin bonding."
+        ],
+        ref: "Tencate's Oral Histology • Ch. 8"
+      },
+      pulp: {
+        title: "Dental Pulp — Neurovascular Heart",
+        badge: "Loose Connective Tissue • Formative, Nutritive, Sensory, Defensive",
+        points: [
+          "Four zones from periphery inward: Odontoblastic layer, Cell-free zone of Weil, Cell-rich zone, Pulp core.",
+          "A-delta fibers transmit sharp, localized pain; C-fibers transmit dull, throbbing pain of irreversible pulpitis.",
+          "Clinical pearl: Cold testing and Electric Pulp Testing (EPT) evaluate neural integrity, not vascularity."
+        ],
+        ref: "Grossman's Endodontic Practice • Ch. 2"
+      },
+      periodontium: {
+        title: "Periodontium — Supporting Apparatus",
+        badge: "Gingiva • PDL • Cementum • Alveolar Bone",
+        points: [
+          "PDL width is ~0.15–0.38 mm (hourglass shape, narrowest at the fulcrum of rotation).",
+          "Principal PDL fiber groups: Alveolar crest, Horizontal, Oblique (largest), Apical, and Interradicular.",
+          "Clinical pearl: Loss of Clinical Attachment Level (CAL) distinguishes periodontitis from gingivitis."
+        ],
+        ref: "Newman & Carranza's Clinical Periodontology • Ch. 2"
+      }
+    };
+
+    // =========================================================================
+    // 3. BUILT-IN SAMPLE KNOWLEDGE BASE (FOR INSTANT INTERACTIVE PREVIEW)
+    // =========================================================================
+    const SAMPLE_TOPICS = {
+      ameloblastoma: {
+        title: "Ameloblastoma",
+        year: "3rd Year BDS",
+        subject: "Oral Pathology & Oral Microbiology",
+        sources: [
+          "Shafer's Textbook of Oral Pathology — Ch. 4 (Odontogenic Tumors), pp. 274–285",
+          "Neville's Oral & Maxillofacial Pathology — Ch. 15, pp. 653–662"
+        ],
+        overview: "Ameloblastoma is a benign, locally aggressive odontogenic epithelial tumor arising from remnants of the dental lamina (cell rests of Serres), reduced enamel epithelium, or basal cells of oral mucosa. Roughly 80% occur in the posterior mandible (molar–ramus region).",
+        examPoints: [
+          "Clinical Types: Conventional (Solid/Multicystic — most common), Unicystic (luminal, intraluminal, mural), Peripheral (extraosseous), and Metastasizing.",
+          "Radiographic Features: Classic multilocular radiolucency ('soap-bubble' or 'honeycomb' appearance) with cortical expansion and knife-edge root resorption.",
+          "Histopathologic Subtypes: Follicular (most common), Plexiform, Acanthomatous, Granular cell, Desmoplastic, and Basal cell.",
+          "Vickers–Gorlin Criteria: Tall columnar ameloblast-like peripheral cells with hyperchromatic nuclei, reverse polarization away from basement membrane, and subnuclear vacuolization."
+        ],
+        vivaPearls: [
+          "Q: Why does conventional ameloblastoma have a high recurrence rate after simple enucleation? — A: Micro-extensions infiltrate cancellous bone trabeculae beyond the radiographic margin; resection with 1–1.5 cm safety margin is preferred.",
+          "Q: Which unicystic variant behaves like a conventional ameloblastoma? — A: Mural type (Type 3), because tumor invades the fibrous cyst wall."
+        ],
+        mcqs: [
+          {
+            q: "Which radiographic appearance is classically associated with conventional multilocular ameloblastoma?",
+            options: ["Sunburst appearance", "Soap-bubble radiolucency", "Cotton-wool radiopacity", "Ground-glass appearance"],
+            answer: 1,
+            explanation: "Large multilocular compartments create the classic 'soap-bubble' appearance; smaller locules resemble a 'honeycomb'."
+          },
+          {
+            q: "Reverse nuclear polarization away from the basement membrane is part of which histopathologic criteria?",
+            options: ["Vickers–Gorlin criteria", "G.V. Black criteria", "Winter's criteria", "TNM staging"],
+            answer: 0,
+            explanation: "Vickers–Gorlin criteria define ameloblastic differentiation in the peripheral columnar cells."
+          }
+        ],
+        figures: [
+          {
+            title: "Fig. 4.12 — Follicular Ameloblastoma Histology",
+            source: "Shafer's Oral Pathology • p. 279",
+            caption: "Islands of odontogenic epithelium showing tall columnar peripheral cells with reverse polarization surrounding a central stellate reticulum–like zone.",
+            svg: `<svg viewBox="0 0 360 210" class="w-full h-44"><rect width="360" height="210" rx="14" fill="#08101E"/><ellipse cx="180" cy="105" rx="115" ry="68" fill="rgba(212,175,55,0.16)" stroke="#D4AF37" stroke-width="3" stroke-dasharray="10 4"/><ellipse cx="180" cy="105" rx="82" ry="44" fill="rgba(56,189,248,0.16)" stroke="#38BDF8" stroke-width="1.5"/><circle cx="150" cy="96" r="6" fill="#7DD3FC"/><circle cx="185" cy="112" r="5" fill="#7DD3FC"/><circle cx="212" cy="95" r="6" fill="#7DD3FC"/><text x="180" y="28" text-anchor="middle" fill="#F5DF9A" font-size="11" font-family="monospace">Tall Columnar Ameloblast-like Peripheral Cells</text><text x="180" y="109" text-anchor="middle" fill="#E0F2FE" font-size="11" font-family="monospace">Stellate Reticulum-like Core</text><text x="180" y="194" text-anchor="middle" fill="#94A3B8" font-size="10" font-family="monospace">Reverse Polarization • Vickers-Gorlin Pattern</text></svg>`
+          },
+          {
+            title: "Fig. 4.15 — Multilocular 'Soap-Bubble' Mandible",
+            source: "Neville's Oral Pathology • p. 656",
+            caption: "Schematic OPG view of posterior mandibular molar-ramus multilocular radiolucency with root resorption.",
+            svg: `<svg viewBox="0 0 360 210" class="w-full h-44"><rect width="360" height="210" rx="14" fill="#060B14"/><path d="M55 150 Q180 185 305 140 L315 55 L275 55 L265 115 Q180 142 85 118 Z" fill="none" stroke="#94A3B8" stroke-width="2.5"/><circle cx="220" cy="130" r="24" fill="rgba(56,189,248,0.12)" stroke="#38BDF8" stroke-width="2"/><circle cx="252" cy="118" r="20" fill="rgba(56,189,248,0.12)" stroke="#38BDF8" stroke-width="2"/><circle cx="238" cy="148" r="16" fill="rgba(212,175,55,0.12)" stroke="#D4AF37" stroke-width="2"/><text x="180" y="34" text-anchor="middle" fill="#F5DF9A" font-size="11" font-family="monospace">Posterior Mandible • Multilocular Radiolucency</text><text x="180" y="194" text-anchor="middle" fill="#7DD3FC" font-size="10" font-family="monospace">Classic Soap-Bubble Pattern (80% Mandibular)</text></svg>`
+          }
+        ]
+      },
+      gvblack: {
+        title: "G.V. Black's Classification of Dental Caries",
+        year: "2nd & 4th Year BDS",
+        subject: "Conservative Dentistry & Endodontics",
+        sources: [
+          "Sturdevant's Art & Science of Operative Dentistry — Ch. 4, pp. 136–142"
+        ],
+        overview: "G.V. Black's universally used system classifies carious lesions and cavity preparations into Classes I through V (with Class VI later added by W.J. Simon) based on anatomic tooth surfaces involved.",
+        examPoints: [
+          "Class I: Pit and fissure caries on occlusal surfaces of premolars/molars, occlusal two-thirds of buccal/lingual surfaces of molars, and lingual pits of maxillary incisors.",
+          "Class II: Proximal surfaces of posterior teeth (premolars and molars).",
+          "Class III: Proximal surfaces of anterior teeth NOT involving the incisal angle.",
+          "Class IV: Proximal surfaces of anterior teeth INVOLVING the incisal edge or angle.",
+          "Class V: Gingival one-third of facial or lingual surfaces of all teeth (smooth surface).",
+          "Class VI (Simon's Modification): Incisal edges of anterior teeth or cusp tips of posterior teeth."
+        ],
+        vivaPearls: [
+          "Q: Who added Class VI? — A: W.J. Simon.",
+          "Q: What is the key clinical difference between Class III and Class IV? — A: Involvement of the incisal angle (Class IV requires stronger retention/resistance form)."
+        ],
+        mcqs: [
+          {
+            q: "A carious lesion on the mesial surface of a maxillary central incisor involving the incisal angle is classified as:",
+            options: ["Class II", "Class III", "Class IV", "Class VI"],
+            answer: 2,
+            explanation: "Class IV involves the proximal surface of an anterior tooth including the incisal angle."
+          }
+        ],
+        figures: [
+          {
+            title: "Fig. 4.3 — G.V. Black Classes I to VI Schematic",
+            source: "Sturdevant's Operative Dentistry • p. 138",
+            caption: "Anatomical mapping of pit-and-fissure, proximal, cervical, and incisal/cusp-tip cavity locations.",
+            svg: `<svg viewBox="0 0 360 210" class="w-full h-44"><rect width="360" height="210" rx="14" fill="#08101E"/><g transform="translate(30,52)"><rect x="0" y="10" width="42" height="58" rx="12" fill="#1E293B" stroke="#94A3B8"/><circle cx="21" cy="24" r="6" fill="#D4AF37"/><text x="21" y="90" text-anchor="middle" fill="#F5DF9A" font-size="10" font-family="monospace">Class I</text></g><g transform="translate(88,52)"><rect x="0" y="10" width="42" height="58" rx="12" fill="#1E293B" stroke="#94A3B8"/><rect x="30" y="16" width="12" height="22" rx="4" fill="#38BDF8"/><text x="21" y="90" text-anchor="middle" fill="#7DD3FC" font-size="10" font-family="monospace">Class II</text></g><g transform="translate(146,52)"><rect x="4" y="10" width="34" height="58" rx="10" fill="#1E293B" stroke="#94A3B8"/><circle cx="34" cy="36" r="5" fill="#D4AF37"/><text x="21" y="90" text-anchor="middle" fill="#F5DF9A" font-size="10" font-family="monospace">Class III</text></g><g transform="translate(204,52)"><rect x="4" y="10" width="34" height="58" rx="10" fill="#1E293B" stroke="#94A3B8"/><path d="M24 10 L38 10 L38 30 L24 30 Z" fill="#38BDF8"/><text x="21" y="90" text-anchor="middle" fill="#7DD3FC" font-size="10" font-family="monospace">Class IV</text></g><g transform="translate(262,52)"><rect x="4" y="10" width="34" height="58" rx="10" fill="#1E293B" stroke="#94A3B8"/><rect x="10" y="54" width="22" height="8" rx="4" fill="#D4AF37"/><text x="21" y="90" text-anchor="middle" fill="#F5DF9A" font-size="10" font-family="monospace">Class V</text></g><text x="180" y="28" text-anchor="middle" fill="#E2E8F0" font-size="11" font-family="monospace">Cavity Locations by Tooth Surface</text></svg>`
+          }
+        ]
+      },
+      ianb: {
+        title: "Inferior Alveolar Nerve Block (IANB)",
+        year: "4th (Final) Year BDS",
+        subject: "Oral & Maxillofacial Surgery",
+        sources: [
+          "Malamed's Handbook of Local Anesthesia — Ch. 14, pp. 227–238",
+          "Neelima Malik's Textbook of Oral & Maxillofacial Surgery — Ch. 13"
+        ],
+        overview: "The Inferior Alveolar Nerve Block (Halsted technique) is the most frequently used mandibular injection, anesthetizing the mandibular teeth to the midline, body of mandible, anterior two-thirds of tongue (via lingual nerve), and buccal soft tissue anterior to the 1st molar.",
+        examPoints: [
+          "Target Area: Inferior alveolar nerve as it passes downward toward the mandibular foramen on the medial aspect of the ramus, beneath the lingula.",
+          "Anatomical Landmarks: Coronoid notch (greatest concavity on anterior border of ramus), pterygomandibular raphe, and occlusal plane of mandibular posterior teeth.",
+          "Insertion Point: Barrel placed over contralateral premolars; needle inserted 6–10 mm above the mandibular occlusal plane, lateral to the pterygomandibular raphe.",
+          "Depth of Penetration: 20–25 mm until gentle bone contact is achieved, withdraw 1 mm, aspirate in two planes, and deposit 1.5 mL slowly over 60 seconds."
+        ],
+        vivaPearls: [
+          "Q: What causes temporary facial nerve paralysis after an IANB? — A: Over-insertion posteriorly into the parotid capsule (no bone contact achieved before depositing solution).",
+          "Q: Why isn't the buccal mucosa of mandibular molars anesthetized by IANB alone? — A: It is innervated by the Long Buccal Nerve, requiring a separate buccal infiltration."
+        ],
+        mcqs: [
+          {
+            q: "Failure to contact bone during an IANB and depositing anesthetic too far posteriorly may cause paralysis of which nerve?",
+            options: ["Trigeminal nerve (CN V)", "Facial nerve (CN VII)", "Hypoglossal nerve (CN XII)", "Glossopharyngeal nerve (CN IX)"],
+            answer: 1,
+            explanation: "Inserting too far posteriorly enters the parotid gland capsule, anesthetizing branches of the facial nerve (CN VII)."
+          }
+        ],
+        figures: [
+          {
+            title: "Fig. 14.6 — Pterygomandibular Space & IANB Landmarks",
+            source: "Malamed's Local Anesthesia • p. 231",
+            caption: "Needle trajectory from contralateral premolars aiming just above the mandibular lingula inside the pterygomandibular space.",
+            svg: `<svg viewBox="0 0 360 210" class="w-full h-44"><rect width="360" height="210" rx="14" fill="#08101E"/><path d="M210 38 L295 45 L290 160 L195 168 L202 105 Z" fill="rgba(148,163,184,0.14)" stroke="#94A3B8" stroke-width="2"/><circle cx="244" cy="106" r="10" fill="rgba(56,189,248,0.28)" stroke="#38BDF8" stroke-width="2"/><line x1="65" y1="150" x2="236" y2="108" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/><polygon points="242,106 231,104 233,113" fill="#F5DF9A"/><text x="115" y="172" text-anchor="middle" fill="#F5DF9A" font-size="10" font-family="monospace">Contralateral Premolar Barrel</text><text x="248" y="84" text-anchor="middle" fill="#7DD3FC" font-size="10" font-family="monospace">Mandibular Foramen</text><text x="180" y="25" text-anchor="middle" fill="#E2E8F0" font-size="11" font-family="monospace">Depth: 20–25 mm • Aspirate in 2 Planes</text></svg>`
+          }
+        ]
+      },
+      kennedy: {
+        title: "Kennedy's Classification of Partially Edentulous Arches",
+        year: "4th (Final) Year BDS",
+        subject: "Prosthodontics & Crown and Bridge",
+        sources: [
+          "McCracken's Removable Partial Prosthodontics — Ch. 3, pp. 17–21"
+        ],
+        overview: "Proposed by Dr. Edward Kennedy (1925) and refined by Applegate's 8 Rules, this is the most widely accepted system for classifying partially edentulous arches based on the relationship of edentulous spaces to abutment teeth.",
+        examPoints: [
+          "Class I: Bilateral edentulous areas located posterior to the remaining natural teeth (most common in mandible).",
+          "Class II: A unilateral edentulous area located posterior to the remaining natural teeth.",
+          "Class III: A unilateral edentulous area with natural teeth remaining both anterior and posterior to it (tooth-supported).",
+          "Class IV: A single, but bilateral (crossing the midline), edentulous area located anterior to the remaining natural teeth.",
+          "Applegate's Key Rules: Classification follows extractions; most posterior edentulous area always determines the class; Class IV cannot have modification spaces."
+        ],
+        vivaPearls: [
+          "Q: Why can't Kennedy's Class IV have any modification spaces? — A: Any additional edentulous area posterior to the anterior space would become the most posterior area and change the classification.",
+          "Q: How are missing 3rd molars handled? — A: Ignored unless they are present and intended to be used as an abutment."
+        ],
+        mcqs: [
+          {
+            q: "According to Applegate's rules, which Kennedy class can NEVER have modification spaces?",
+            options: ["Class I", "Class II", "Class III", "Class IV"],
+            answer: 3,
+            explanation: "Rule 8 states there can be no modification areas in Class IV arches because any posterior space would govern the primary class."
+          }
+        ],
+        figures: [
+          {
+            title: "Fig. 3.2 — Kennedy's Classes I–IV Arch Diagrams",
+            source: "McCracken's RPD • p. 18",
+            caption: "Comparison of bilateral distal extension (I), unilateral distal extension (II), tooth-bounded (III), and anterior midline-crossing (IV).",
+            svg: `<svg viewBox="0 0 360 210" class="w-full h-44"><rect width="360" height="210" rx="14" fill="#08101E"/><g stroke-width="4" fill="none"><path d="M32 130 Q55 58 78 130" stroke="#94A3B8"/><path d="M28 115 L36 142 M74 142 L82 115" stroke="#D4AF37"/><path d="M118 130 Q141 58 164 130" stroke="#94A3B8"/><path d="M160 142 L168 115" stroke="#38BDF8"/><path d="M204 130 Q227 58 250 130" stroke="#94A3B8"/><path d="M242 98 L248 118" stroke="#D4AF37"/><path d="M290 130 Q313 58 336 130" stroke="#94A3B8"/><path d="M300 78 Q313 68 326 78" stroke="#38BDF8"/></g><text x="55" y="168" text-anchor="middle" fill="#F5DF9A" font-size="11" font-family="monospace">Class I</text><text x="141" y="168" text-anchor="middle" fill="#7DD3FC" font-size="11" font-family="monospace">Class II</text><text x="227" y="168" text-anchor="middle" fill="#F5DF9A" font-size="11" font-family="monospace">Class III</text><text x="313" y="168" text-anchor="middle" fill="#7DD3FC" font-size="11" font-family="monospace">Class IV</text><text x="180" y="28" text-anchor="middle" fill="#E2E8F0" font-size="11" font-family="monospace">Highlighted Zones = Edentulous Spaces</text></svg>`
+          }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // 4. APPLICATION STATE
+    // =========================================================================
+    const state = {
+      activeCurriculumYear: "1",
+      selectedMode: "concept",
+      activeLayer: "enamel",
+      backendUrl: "",
+      bookmarks: [],
+      currentResult: null
+    };
+
+    // Safe localStorage wrapper
+    function loadSavedState() {
+      try {
+        const savedUrl = localStorage.getItem("cbds_backend_url");
+        if (savedUrl) state.backendUrl = savedUrl;
+        const savedBookmarks = JSON.parse(localStorage.getItem("cbds_bookmarks") || "[]");
+        if (Array.isArray(savedBookmarks)) state.bookmarks = savedBookmarks;
+      } catch (e) {
+        // Ignore storage restrictions in sandboxed preview
+      }
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem("cbds_backend_url", state.backendUrl);
+        localStorage.setItem("cbds_bookmarks", JSON.stringify(state.bookmarks));
+      } catch (e) {
+        // Ignore storage restrictions in sandboxed preview
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.remove("hidden");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.add("hidden"), 2800);
+    }
+
+    // =========================================================================
+    // 5. POPULATE SUBJECT DROPDOWN & 4-YEAR CURRICULUM GRID
+    // =========================================================================
+    function populateSubjectDropdown(yearFilter) {
+      const select = document.getElementById("select-subject");
+      select.innerHTML = '<option value="all">All Subjects</option>';
+      const years = yearFilter === "all" ? ["1", "2", "3", "4"] : [yearFilter];
+      years.forEach((yr) => {
+        const grp = document.createElement("optgroup");
+        grp.label = BDS_CURRICULUM[yr].label;
+        BDS_CURRICULUM[yr].subjects.forEach((subj) => {
+          const opt = document.createElement("option");
+          opt.value = subj.id;
+          opt.textContent = subj.name;
+          grp.appendChild(opt);
+        });
+        select.appendChild(grp);
+      });
+    }
+
+    function renderCurriculum(yearKey) {
+      state.activeCurriculumYear = yearKey;
+      document.querySelectorAll(".year-tab").forEach((btn) => {
+        const isActive = btn.dataset.year === yearKey;
+        btn.className = isActive
+          ? "year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border border-gold-400 bg-gold-500/20 text-gold-300 shadow-lg shadow-gold-500/10 transition"
+          : "year-tab px-4 py-2 rounded-xl text-xs font-bold tracking-wide border border-white/10 bg-white/[0.03] text-slate-300 hover:border-gold-500/40 hover:text-gold-300 transition";
+      });
+
+      const grid = document.getElementById("subjects-grid");
+      const yearObj = BDS_CURRICULUM[yearKey];
+      grid.innerHTML = yearObj.subjects
+        .map(
+          (subj) => `
+          <article class="glass-panel glass-card-hover rounded-2xl p-5 flex flex-col justify-between gap-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-md bg-clinical-400/15 text-clinical-300 border border-clinical-400/25">
+                  ${yearObj.label}
+                </span>
+                <span class="text-[11px] font-mono text-gold-300/80">${subj.topics.length} High-Yield</span>
+              </div>
+              <h3 class="font-display text-lg font-bold text-white leading-snug">${subj.name}</h3>
+              <p class="text-xs text-slate-400">${subj.short}</p>
+              <div class="text-[11px] text-gold-300/75 font-medium pt-1">Ref: ${subj.books}</div>
+            </div>
+
+            <div class="space-y-2.5 pt-2 border-t border-white/10">
+              <div class="flex flex-wrap gap-1.5">
+                ${subj.topics
+                  .map(
+                    (topic) => `
+                  <button
+                    type="button"
+                    data-subject-id="${subj.id}"
+                    data-subject-year="${yearKey}"
+                    data-topic-name="${topic.replace(/"/g, "&quot;")}"
+                    class="subject-topic-btn text-[11px] px-2.5 py-1 rounded-lg bg-obsidian/70 border border-white/10 text-slate-300 hover:border-gold-400/60 hover:text-gold-300 transition text-left"
+                  >
+                    ${topic}
+                  </button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+          </article>`
+        )
+        .join("");
+
+      attachSpotlightListeners();
+    }
+
+    // =========================================================================
+    // 6. STUDY MODE PILLS & ORACLE QUERY EXECUTION
+    // =========================================================================
+    function updateModePills() {
+      document.querySelectorAll(".mode-pill").forEach((btn) => {
+        const active = btn.dataset.mode === state.selectedMode;
+        btn.className = active
+          ? "mode-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-gold-400 bg-gold-500/20 text-gold-300 shadow shadow-gold-500/15 transition"
+          : "mode-pill px-3.5 py-1.5 rounded-full text-xs font-semibold border border-white/10 bg-white/[0.03] text-slate-300 hover:border-clinical-400/50 hover:text-clinical-300 transition";
+      });
+    }
+
+    function updateConnectionUI() {
+      const pill = document.getElementById("mode-status-pill");
+      const dot = document.getElementById("connection-dot");
+      if (state.backendUrl) {
+        pill.className =
+          "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 text-xs font-medium self-start md:self-auto";
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Live Backend Connected</span>`;
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-950";
+      } else {
+        pill.className =
+          "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-clinical-400/10 border border-clinical-400/30 text-clinical-300 text-xs font-medium self-start md:self-auto";
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-clinical-400"></span><span>Interactive Preview Mode (Sample Textbooks Loaded)</span>`;
+        dot.className = "w-2 h-2 rounded-full bg-emerald-950 ring-2 ring-emerald-900";
+      }
+    }
+
+    function findSampleTopic(query) {
+      const q = (query || "").toLowerCase();
+      if (q.includes("ameloblastoma")) return SAMPLE_TOPICS.ameloblastoma;
+      if (q.includes("black") || q.includes("caries") || q.includes("cavity")) return SAMPLE_TOPICS.gvblack;
+      if (q.includes("inferior") || q.includes("nerve") || q.includes("ianb") || q.includes("block")) return SAMPLE_TOPICS.ianb;
+      if (q.includes("kennedy") || q.includes("rpd") || q.includes("edentulous")) return SAMPLE_TOPICS.kennedy;
+
+      // Dynamic clean preview response for any other BDS topic
+      const subjSelect = document.getElementById("select-subject");
+      const subjLabel = subjSelect.options[subjSelect.selectedIndex]?.text || "General BDS Curriculum";
+      const yrVal = document.getElementById("select-year").value;
+      const yrLabel = yrVal === "all" ? "BDS Curriculum" : BDS_CURRICULUM[yrVal].label;
+
+      return {
+        title: query || "BDS Clinical Topic",
+        year: yrLabel,
+        subject: subjLabel,
+        sources: [
+          `Connect your PythonAnywhere SQLite FTS5 backend to retrieve exact book chapters & pages for "${query}".`
+        ],
+        overview: `Preview summary for "${query}" (${subjLabel}). Once connected to your PythonAnywhere Flask backend (app.py + bds_knowledge.db), this card automatically populates with exact textbook passages, university LAQ/SAQ headings, clinical correlations, and extracted WebP textbook diagrams from your 1.88 GB PDF library.`,
+        examPoints: [
+          "Definition & Classification: Structured directly from your indexed standard textbook.",
+          "Etiology & Pathogenesis: Bullet points formatted for 10-mark LAQ and 5-mark SAQ university exams.",
+          "Clinical & Radiographic Features: Key diagnostic differentiators highlighted for quick revision.",
+          "Management Protocol: Stepwise treatment and follow-up plan with textbook page citation."
+        ],
+        vivaPearls: [
+          "Viva Tip: Connect your PythonAnywhere endpoint in 'Backend & Logo' to generate custom viva questions grounded in your exact PDFs."
+        ],
+        mcqs: [
+          {
+            q: `How does Conquering BDS retrieve textbook content for "${query}" in Live Mode?`,
+            options: [
+              "Local SQLite FTS5 search on PythonAnywhere + Gemini Flash",
+              "Downloading raw 1.88 GB PDFs in the student's browser",
+              "Paid cloud vector database only",
+              "Manual typing for each page"
+            ],
+            answer: 0,
+            explanation: "SQLite FTS5 searches your extracted textbook chunks in <50 ms and pairs them with cached Gemini Flash answers and WebP figures."
+          }
+        ],
+        figures: SAMPLE_TOPICS.ameloblastoma.figures.slice(0, 1).map((f) => ({
+          ...f,
+          title: `Sample Figure Slot — ${query}`,
+          source: "Connected WebP Textbook Repository",
+          caption: `In Live Mode, extracted WebP diagrams from matching textbook pages for "${query}" appear here automatically with zoom.`
+        }))
+      };
+    }
+
+    async function runOracleSearch(query) {
+      const cleanQuery = (query || "").trim();
+      if (!cleanQuery) {
+        showToast("Enter a BDS topic or click a high-yield chip.");
+        return;
+      }
+
+      const loadingEl = document.getElementById("oracle-loading");
+      const resultEl = document.getElementById("oracle-result");
+      loadingEl.classList.remove("hidden");
+      resultEl.innerHTML = "";
+
+      let data = null;
+
+      if (state.backendUrl && state.backendUrl.startsWith("https://")) {
+        try {
+          const resp = await fetch(state.backendUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              query: cleanQuery,
+              year: document.getElementById("select-year").value,
+              subject: document.getElementById("select-subject").value,
+              mode: state.selectedMode
+            })
+          });
+          if (!resp.ok) throw new Error("Backend returned " + resp.status);
+          data = await resp.json();
+        } catch (err) {
+          showToast("Live backend unreachable — showing preview sample.");
+          data = findSampleTopic(cleanQuery);
+        }
+      } else {
+        await new Promise((r) => setTimeout(r, 260));
+        data = findSampleTopic(cleanQuery);
+      }
+
+      state.currentResult = data;
+      loadingEl.classList.add("hidden");
+      renderOracleResult(data);
+    }
+
+    function renderOracleResult(data) {
+      const container = document.getElementById("oracle-result");
+      const isBookmarked = state.bookmarks.some((b) => b.title === data.title);
+      const mode = state.selectedMode;
+
+      const figuresHtml = (data.figures || [])
+        .map(
+          (fig, idx) => `
+          <div
+            data-fig-idx="${idx}"
+            class="figure-card cursor-pointer group rounded-2xl bg-obsidian/80 border border-clinical-400/25 hover:border-gold-400/60 p-3.5 transition space-y-2.5"
+          >
+            <div class="rounded-xl overflow-hidden bg-midnight border border-white/10">
+              ${
+                fig.url
+                  ? `<img src="${fig.url}" alt="${fig.title}" class="w-full h-44 object-contain bg-obsidian group-hover:scale-105 transition duration-500" />`
+                  : fig.svg || ""
+              }
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gold-300 group-hover:text-gold-200">${fig.title}</div>
+              <div class="text-[11px] font-mono text-clinical-300/80 mt-0.5">${fig.source || ""}</div>
+              <p class="text-[11px] text-slate-400 mt-1 line-clamp-2">${fig.caption || ""}</p>
+            </div>
+          </div>`
+        )
+        .join("");
+
+      const mcqsHtml = (data.mcqs || [])
+        .map(
+          (m, qIdx) => `
+          <div class="rounded-2xl bg-obsidian/75 border border-white/10 p-4 space-y-3" data-mcq-box="${qIdx}">
+            <div class="text-sm font-semibold text-white">Q${qIdx + 1}. ${m.q}</div>
+            <div class="grid sm:grid-cols-2 gap-2">
+              ${m.options
+                .map(
+                  (opt, oIdx) => `
+                <button
+                  type="button"
+                  data-q="${qIdx}"
+                  data-opt="${oIdx}"
+                  class="mcq-opt-btn text-left text-xs px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-clinical-400/60 text-slate-200 transition"
+                >
+                  <span class="font-mono text-gold-300 mr-1.5">${String.fromCharCode(65 + oIdx)}.</span>${opt}
+                </button>`
+                )
+                .join("")}
+            </div>
+            <div class="mcq-feedback hidden text-xs rounded-xl p-3"></div>
+          </div>`
+        )
+        .join("");
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Result Header -->
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-gold-500/15 text-gold-300 border border-gold-500/30">${data.year || "BDS"}</span>
+                <span class="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-clinical-400/15 text-clinical-300 border border-clinical-400/30">${data.subject || "Dental Science"}</span>
+              </div>
+              <h3 class="font-display text-2xl sm:text-3xl font-bold text-white">${data.title}</h3>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button id="btn-copy-answer" type="button" class="btn-glass px-3.5 py-2 rounded-xl text-xs font-semibold">Copy Notes</button>
+              <button id="btn-toggle-bookmark" type="button" class="btn-glass px-3.5 py-2 rounded-xl text-xs font-semibold ${isBookmarked ? "border-gold-400 text-gold-300 bg-gold-500/15" : ""}">
+                ${isBookmarked ? "Saved ★" : "Save Topic ☆"}
+              </button>
+            </div>
+          </div>
+
+          <!-- Textbook Sources -->
+          <div class="rounded-2xl bg-gold-500/[0.06] border border-gold-500/20 px-4 py-3 flex flex-wrap items-center gap-2 text-xs">
+            <span class="font-mono uppercase tracking-wider text-gold-300 font-semibold">Textbook Citations:</span>
+            ${(data.sources || []).map((s) => `<span class="text-slate-200">${s}</span>`).join('<span class="text-gold-500/50">&bull;</span>')}
+          </div>
+
+          ${
+            mode !== "images"
+              ? `
+            <!-- Core Overview -->
+            <div class="rounded-2xl bg-obsidian/60 border border-white/10 p-5 space-y-2">
+              <div class="text-xs font-mono uppercase tracking-wider text-clinical-300">Concept Overview</div>
+              <p class="text-sm text-slate-200 leading-relaxed">${data.overview}</p>
+            </div>
+
+            <!-- Exam Structured Points -->
+            <div class="rounded-2xl bg-obsidian/60 border border-white/10 p-5 space-y-3">
+              <div class="text-xs font-mono uppercase tracking-wider text-gold-300">
+                ${mode === "exam" ? "University Exam Answer Format (LAQ / SAQ)" : "High-Yield Textbook Points"}
+              </div>
+              <ul class="space-y-2.5 text-sm text-slate-200">
+                ${(data.examPoints || [])
+                  .map(
+                    (pt) => `
+                  <li class="flex items-start gap-2.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-400 mt-2 shrink-0"></span>
+                    <span class="leading-relaxed">${pt}</span>
+                  </li>`
+                  )
+                  .join("")}
+              </ul>
+            </div>
+          `
+              : ""
+          }
+
+          ${
+            mode === "viva" || mode === "concept"
+              ? `
+            <!-- Clinical & Viva Pearls -->
+            <div class="rounded-2xl bg-clinical-500/[0.07] border border-clinical-400/25 p-5 space-y-2.5">
+              <div class="text-xs font-mono uppercase tracking-wider text-clinical-300">Viva Voce &amp; Clinical Pearls</div>
+              <div class="space-y-2 text-sm text-slate-200">
+                ${(data.vivaPearls || []).map((v) => `<p class="leading-relaxed">${v}</p>`).join("")}
+              </div>
+            </div>
+          `
+              : ""
+          }
+
+          ${
+            mode === "mcq"
+              ? `
+            <!-- Interactive MCQ Drill -->
+            <div class="space-y-3">
+              <div class="text-xs font-mono uppercase tracking-wider text-gold-300">Interactive NEET-MDS / University MCQ Drill</div>
+              ${mcqsHtml}
+            </div>
+          `
+              : ""
+          }
+
+          <!-- Textbook Figures Gallery -->
+          ${
+            figuresHtml
+              ? `
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="text-xs font-mono uppercase tracking-wider text-clinical-300">Textbook Figures &amp; Diagrams (Click to Zoom)</div>
+                <span class="text-[11px] text-slate-400">${(data.figures || []).length} Figure(s)</span>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-4">${figuresHtml}</div>
+            </div>
+          `
+              : ""
+          }
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 7. INTERACTIVE TOOTH LAYER SWITCHER
+    // =========================================================================
+    function renderToothLayer(layerKey) {
+      state.activeLayer = layerKey;
+      document.querySelectorAll(".tooth-zone").forEach((el) => {
+        el.classList.toggle("active-zone", el.dataset.layer === layerKey);
+      });
+      document.querySelectorAll(".layer-btn").forEach((btn) => {
+        const active = btn.dataset.layer === layerKey;
+        btn.className = active
+          ? "layer-btn px-4 py-2 rounded-xl text-xs font-bold border border-clinical-400 bg-clinical-400/20 text-clinical-300 transition"
+          : "layer-btn px-4 py-2 rounded-xl text-xs font-bold border border-white/10 bg-white/[0.03] text-slate-300 hover:border-gold-400/50 transition";
+      });
+
+      const info = TOOTH_LAYERS[layerKey];
+      document.getElementById("layer-detail-card").innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="font-display text-xl font-bold text-gold-300">${info.title}</h3>
+          <span class="text-[11px] font-mono text-clinical-300 bg-clinical-400/10 border border-clinical-400/25 px-2.5 py-1 rounded-lg">${info.badge}</span>
+        </div>
+        <ul class="space-y-2 text-sm text-slate-200 pt-1">
+          ${info.points
+            .map(
+              (p) => `
+            <li class="flex items-start gap-2.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-clinical-400 mt-2 shrink-0"></span>
+              <span>${p}</span>
+            </li>`
+            )
+            .join("")}
+        </ul>
+        <div class="text-[11px] font-mono text-slate-400 pt-2 border-t border-white/10">Source: ${info.ref}</div>
+      `;
+    }
+
+    // =========================================================================
+    // 8. BOOKMARKS, LIGHTBOX, COPY, SPOTLIGHT & SCROLL ANIMATIONS
+    // =========================================================================
+    function updateBookmarkBadge() {
+      document.getElementById("bookmark-count").textContent = state.bookmarks.length;
+    }
+
+    function renderBookmarksModal() {
+      const list = document.getElementById("bookmarks-list");
+      if (state.bookmarks.length === 0) {
+        list.innerHTML = '<p class="text-xs text-slate-400 py-6 text-center">No saved topics yet. Click "Save Topic ☆" on any Oracle answer.</p>';
+        return;
+      }
+      list.innerHTML = state.bookmarks
+        .map(
+          (b, idx) => `
+          <div class="flex items-center justify-between gap-3 rounded-xl bg-obsidian/80 border border-white/10 px-4 py-3">
+            <button type="button" data-open-bookmark="${idx}" class="text-left flex-1">
+              <div class="text-sm font-semibold text-gold-300 hover:underline">${b.title}</div>
+              <div class="text-[11px] text-slate-400">${b.subject} &bull; ${b.year}</div>
+            </button>
+            <button type="button" data-remove-bookmark="${idx}" class="text-xs text-slate-400 hover:text-rose-400 px-2 py-1">Remove</button>
+          </div>`
+        )
+        .join("");
+    }
+
+    function openLightbox(fig) {
+      document.getElementById("lightbox-title").textContent = fig.title;
+      document.getElementById("lightbox-media").innerHTML = fig.url
+        ? `<img src="${fig.url}" alt="${fig.title}" class="max-h-[58vh] w-auto rounded-xl object-contain" />`
+        : fig.svg || "";
+      document.getElementById("lightbox-caption").textContent = `${fig.source ? fig.source + " — " : ""}${fig.caption || ""}`;
+      document.getElementById("lightbox-modal").classList.remove("hidden");
+    }
+
+    function copyCurrentAnswer() {
+      if (!state.currentResult) return;
+      const r = state.currentResult;
+      const text = [
+        `${r.title} (${r.subject})`,
+        `Citations: ${(r.sources || []).join("; ")}`,
+        "",
+        r.overview || "",
+        "",
+        ...(r.examPoints || []).map((p) => "- " + p)
+      ].join("\n");
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast("Notes copied to clipboard!")).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast("Notes copied to clipboard!");
+      } catch (e) {
+        showToast("Copy unavailable in this browser.");
+      }
+      document.body.removeChild(ta);
+    }
+
+    function attachSpotlightListeners() {
+      document.querySelectorAll(".glass-panel").forEach((panel) => {
+        if (panel.dataset.spotlightBound) return;
+        panel.dataset.spotlightBound = "1";
+        panel.addEventListener("mousemove", (e) => {
+          const rect = panel.getBoundingClientRect();
+          panel.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+          panel.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+        });
+      });
+    }
+
+    function initScrollAnimations() {
+      const bar = document.getElementById("scroll-progress");
+      window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+        bar.style.width = pct + "%";
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    }
+
+    // =========================================================================
+    // 9. EVENT WIRING & INITIALIZATION
+    // =========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      loadSavedState();
+      populateSubjectDropdown("all");
+      renderCurriculum("1");
+      updateModePills();
+      updateConnectionUI();
+      updateBookmarkBadge();
+      renderToothLayer("enamel");
+      attachSpotlightListeners();
+      initScrollAnimations();
+
+      // Load default showcase topic immediately so the Oracle opens rich
+      document.getElementById("oracle-input").value = "Ameloblastoma";
+      runOracleSearch("Ameloblastoma");
+
+      // Year dropdown updates Subject dropdown
+      document.getElementById("select-year").addEventListener("change", (e) => {
+        populateSubjectDropdown(e.target.value);
+      });
+
+      // Oracle Form Submit
+      document.getElementById("oracle-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        runOracleSearch(document.getElementById("oracle-input").value);
+      });
+
+      // Study Mode Pills
+      document.querySelectorAll(".mode-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedMode = btn.dataset.mode;
+          updateModePills();
+          if (state.currentResult) renderOracleResult(state.currentResult);
+        });
+      });
+
+      // Quick Topic Chips
+      document.querySelectorAll(".quick-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.getElementById("oracle-input").value = btn.dataset.topic;
+          runOracleSearch(btn.dataset.topic);
+        });
+      });
+
+      // Curriculum Year Tabs
+      document.getElementById("year-tabs").addEventListener("click", (e) => {
+        const btn = e.target.closest(".year-tab");
+        if (btn) renderCurriculum(btn.dataset.year);
+      });
+
+      // Footer Year Jump Links
+      document.querySelectorAll(".footer-year-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          renderCurriculum(link.dataset.footerYear);
+        });
+      });
+
+      // Clicking a Subject Topic Chip inside Curriculum Grid
+      document.getElementById("subjects-grid").addEventListener("click", (e) => {
+        const btn = e.target.closest(".subject-topic-btn");
+        if (!btn) return;
+        document.getElementById("select-year").value = btn.dataset.subjectYear;
+        populateSubjectDropdown(btn.dataset.subjectYear);
+        document.getElementById("select-subject").value = btn.dataset.subjectId;
+        document.getElementById("oracle-input").value = btn.dataset.topicName;
+        document.getElementById("oracle").scrollIntoView({ behavior: "smooth" });
+        runOracleSearch(btn.dataset.topicName);
+      });
+
+      // Interactive Tooth SVG & Buttons
+      document.querySelectorAll(".tooth-zone").forEach((el) => {
+        el.addEventListener("click", () => renderToothLayer(el.dataset.layer));
+      });
+      document.getElementById("layer-buttons").addEventListener("click", (e) => {
+        const btn = e.target.closest(".layer-btn");
+        if (btn) renderToothLayer(btn.dataset.layer);
+      });
+
+      // Delegated Clicks inside Oracle Result (Copy, Bookmark, MCQ, Figure Lightbox)
+      document.getElementById("oracle-result").addEventListener("click", (e) => {
+        if (e.target.closest("#btn-copy-answer")) {
+          copyCurrentAnswer();
+          return;
+        }
+        if (e.target.closest("#btn-toggle-bookmark")) {
+          if (!state.currentResult) return;
+          const idx = state.bookmarks.findIndex((b) => b.title === state.currentResult.title);
+          if (idx >= 0) {
+            state.bookmarks.splice(idx, 1);
+            showToast("Removed from saved topics.");
+          } else {
+            state.bookmarks.unshift({
+              title: state.currentResult.title,
+              subject: state.currentResult.subject,
+              year: state.currentResult.year
+            });
+            showToast("Topic saved to bookmarks!");
+          }
+          persistState();
+          updateBookmarkBadge();
+          renderOracleResult(state.currentResult);
+          return;
+        }
+        const mcqBtn = e.target.closest(".mcq-opt-btn");
+        if (mcqBtn && state.currentResult?.mcqs) {
+          const qIdx = Number(mcqBtn.dataset.q);
+          const optIdx = Number(mcqBtn.dataset.opt);
+          const mcq = state.currentResult.mcqs[qIdx];
+          const box = mcqBtn.closest("[data-mcq-box]");
+          const feedback = box.querySelector(".mcq-feedback");
+          const isCorrect = optIdx === mcq.answer;
+          box.querySelectorAll(".mcq-opt-btn").forEach((b, idx) => {
+            b.classList.remove("border-emerald-400", "bg-emerald-500/20", "border-rose-400", "bg-rose-500/20");
+            if (idx === mcq.answer) b.classList.add("border-emerald-400", "bg-emerald-500/20");
+            else if (idx === optIdx && !isCorrect) b.classList.add("border-rose-400", "bg-rose-500/20");
+          });
+          feedback.classList.remove("hidden");
+          feedback.className = isCorrect
+            ? "mcq-feedback text-xs rounded-xl p-3 bg-emerald-500/15 border border-emerald-400/35 text-emerald-200"
+            : "mcq-feedback text-xs rounded-xl p-3 bg-rose-500/15 border border-rose-400/35 text-rose-200";
+          feedback.textContent = (isCorrect ? "Correct! " : "Not quite. ") + mcq.explanation;
+          return;
+        }
+        const figCard = e.target.closest(".figure-card");
+        if (figCard && state.currentResult?.figures) {
+          const fig = state.currentResult.figures[Number(figCard.dataset.figIdx)];
+          if (fig) openLightbox(fig);
+        }
+      });
+
+      // Mobile Menu Toggle
+      document.getElementById("btn-mobile-menu").addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      });
+      document.querySelectorAll(".mobile-nav-link").forEach((a) => {
+        a.addEventListener("click", () => document.getElementById("mobile-menu").classList.add("hidden"));
+      });
+
+      // Settings Modal
+      document.getElementById("btn-settings").addEventListener("click", () => {
+        document.getElementById("input-backend-url").value = state.backendUrl;
+        document.getElementById("settings-modal").classList.remove("hidden");
+      });
+      document.getElementById("close-settings").addEventListener("click", () => {
+        document.getElementById("settings-modal").classList.add("hidden");
+      });
+      document.getElementById("btn-reset-demo").addEventListener("click", () => {
+        state.backendUrl = "";
+        document.getElementById("input-backend-url").value = "";
+        persistState();
+        updateConnectionUI();
+        document.getElementById("settings-modal").classList.add("hidden");
+        showToast("Switched to Interactive Preview Mode.");
+      });
+      document.getElementById("btn-save-settings").addEventListener("click", () => {
+        const val = document.getElementById("input-backend-url").value.trim();
+        if (val && !val.startsWith("https://")) {
+          showToast("Backend URL must start with https://");
+          return;
+        }
+        state.backendUrl = val;
+        persistState();
+        updateConnectionUI();
+        document.getElementById("settings-modal").classList.add("hidden");
+        showToast(val ? "Live backend URL saved!" : "Saved in Preview Mode.");
+      });
+
+      // Live Custom Logo Preview Upload
+      document.getElementById("input-logo-upload").addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const dataUrl = ev.target.result;
+          ["brand-logo-header", "brand-logo-hero", "brand-logo-footer"].forEach((id) => {
+            const img = document.getElementById(id);
+            if (img) img.src = dataUrl;
+          });
+          showToast("Custom logo preview applied!");
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Bookmarks Modal
+      document.getElementById("btn-bookmarks").addEventListener("click", () => {
+        renderBookmarksModal();
+        document.getElementById("bookmarks-modal").classList.remove("hidden");
+      });
+      document.getElementById("close-bookmarks").addEventListener("click", () => {
+        document.getElementById("bookmarks-modal").classList.add("hidden");
+      });
+      document.getElementById("bookmarks-list").addEventListener("click", (e) => {
+        const openBtn = e.target.closest("[data-open-bookmark]");
+        if (openBtn) {
+          const item = state.bookmarks[Number(openBtn.dataset.openBookmark)];
+          document.getElementById("bookmarks-modal").classList.add("hidden");
+          document.getElementById("oracle-input").value = item.title;
+          document.getElementById("oracle").scrollIntoView({ behavior: "smooth" });
+          runOracleSearch(item.title);
+          return;
+        }
+        const remBtn = e.target.closest("[data-remove-bookmark]");
+        if (remBtn) {
+          state.bookmarks.splice(Number(remBtn.dataset.removeBookmark), 1);
+          persistState();
+          updateBookmarkBadge();
+          renderBookmarksModal();
+          if (state.currentResult) renderOracleResult(state.currentResult);
+        }
+      });
+
+      // Lightbox Close
+      document.getElementById("close-lightbox").addEventListener("click", () => {
+        document.getElementById("lightbox-modal").classList.add("hidden");
+      });
+      document.getElementById("lightbox-modal").addEventListener("click", (e) => {
+        if (e.target.id === "lightbox-modal") e.currentTarget.classList.add("hidden");
+      });
+    });
+  </script>
+</body>
+</html>
