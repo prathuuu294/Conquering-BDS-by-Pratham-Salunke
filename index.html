@@ -241,6 +241,7 @@
       border-radius: 999px;
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-300">
   <div id="scroll-progress"></div>
@@ -1378,6 +1379,7 @@
     }
 
     function renderOracleResult(data) {
+      window.__cbdsCurrentResult = data;
       const container = document.getElementById("oracle-result");
       const isBookmarked = state.bookmarks.some((b) => b.title === data.title);
       const mode = state.selectedMode;
@@ -1441,7 +1443,8 @@
               </div>
               <h3 class="font-display text-2xl sm:text-3xl font-bold text-white">${data.title}</h3>
             </div>
-            <div class="flex items-center gap-2 shrink-0">
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button id="btn-download-pdf" type="button" class="btn-luxury px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-1.5"><span>&#11015;</span><span>Download PDF</span></button>
               <button id="btn-copy-answer" type="button" class="btn-glass px-3.5 py-2 rounded-xl text-xs font-semibold">Copy Notes</button>
               <button id="btn-toggle-bookmark" type="button" class="btn-glass px-3.5 py-2 rounded-xl text-xs font-semibold ${isBookmarked ? "border-gold-400 text-gold-300 bg-gold-500/15" : ""}">
                 ${isBookmarked ? "Saved ★" : "Save Topic ☆"}
@@ -1893,5 +1896,713 @@
       });
     });
   </script>
+
+<!-- CBDS_PDF_ENGINE_START -->
+<script>
+(function () {
+  const SITE_BRAND = "CONQUERING BDS";
+  const SITE_SUB = "BY PRATHAM SALUNKE  |  LUXURY DENTAL KNOWLEDGE PLATFORM";
+  const SITE_URL = "prathuuu294.github.io/Conquering-BDS-by-Pratham-Salunke";
+
+  function notify(msg) {
+    if (typeof showToast === "function") {
+      showToast(msg);
+    }
+  }
+
+  function sanitizeText(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/<[^>]*>/g, "")
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[\u2013\u2014]/g, "-")
+      .replace(/\u2022/g, "-")
+      .replace(/\u2192/g, "->")
+      .replace(/\u2190/g, "<-")
+      .replace(/\u2265/g, ">=")
+      .replace(/\u2264/g, "<=")
+      .replace(/\u00B1/g, "+/-")
+      .replace(/\u00D7/g, "x")
+      .replace(/\u00B0/g, " deg")
+      .replace(/[\u00B5\u03BC]/g, "u")
+      .replace(/\u03B1/g, "alpha")
+      .replace(/\u03B2/g, "beta")
+      .replace(/\u03B3/g, "gamma")
+      .replace(/\u03B4/g, "delta")
+      .replace(/\u00B2/g, "2")
+      .replace(/\u00B3/g, "3")
+      .replace(/\u00A0/g, " ")
+      .replace(/[^\x20-\x7E\n]/g, "")
+      .replace(/\s+\n/g, "\n")
+      .trim();
+  }
+
+  function loadCircularLogo(src) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      const timer = setTimeout(() => resolve(null), 8000);
+      img.onload = () => {
+        clearTimeout(timer);
+        try {
+          const size = 256;
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, size / 2 - 8, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+
+          ctx.fillStyle = "#04070D";
+          ctx.fillRect(0, 0, size, size);
+
+          const scale = Math.max(size / img.naturalWidth, size / img.naturalHeight);
+          const dw = img.naturalWidth * scale;
+          const dh = img.naturalHeight * scale;
+          ctx.drawImage(img, (size - dw) / 2, (size - dh) / 2, dw, dh);
+          ctx.restore();
+
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, size / 2 - 6, 0, Math.PI * 2);
+          ctx.lineWidth = 10;
+          ctx.strokeStyle = "#D4AF37";
+          ctx.stroke();
+
+          resolve(canvas.toDataURL("image/png"));
+        } catch (e) {
+          resolve(null);
+        }
+      };
+      img.onerror = () => {
+        clearTimeout(timer);
+        resolve(null);
+      };
+      img.src = src;
+    });
+  }
+
+  function loadFigureAsJpeg(url) {
+    return new Promise((resolve) => {
+      if (!url) return resolve(null);
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      const timer = setTimeout(() => resolve(null), 12000);
+      img.onload = () => {
+        clearTimeout(timer);
+        try {
+          const maxDim = 960;
+          let w = img.naturalWidth || 600;
+          let h = img.naturalHeight || 400;
+          if (w > maxDim || h > maxDim) {
+            const ratio = Math.min(maxDim / w, maxDim / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve({
+            dataUrl: canvas.toDataURL("image/jpeg", 0.88),
+            width: w,
+            height: h
+          });
+        } catch (e) {
+          resolve(null);
+        }
+      };
+      img.onerror = () => {
+        clearTimeout(timer);
+        resolve(null);
+      };
+      img.src = url;
+    });
+  }
+
+  async function generateLuxuryBDSPdf(btnEl) {
+    const data =
+      window.__cbdsCurrentResult ||
+      (typeof state !== "undefined" ? state.currentResult : null);
+
+    if (!data || !data.title) {
+      notify("Search a BDS topic first to download PDF notes.");
+      return;
+    }
+
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      notify("PDF library still loading — please tap again in 2 seconds.");
+      return;
+    }
+
+    const originalHtml = btnEl ? btnEl.innerHTML : "";
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.innerHTML = "<span>Building PDF...</span>";
+    }
+
+    try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+      const PAGE_W = 210;
+      const PAGE_H = 297;
+      const MARGIN = 14;
+      const CONTENT_W = PAGE_W - MARGIN * 2;
+      const TOP_Y = 29;
+      const BOTTOM_Y = 278;
+
+      // Colors
+      const OBSIDIAN = [7, 13, 25];
+      const NAVY = [15, 23, 42];
+      const GOLD = [212, 175, 55];
+      const GOLD_DARK = [154, 118, 22];
+      const GOLD_SOFT = [245, 223, 154];
+      const GOLD_BG = [253, 249, 236];
+      const CYAN = [2, 132, 199];
+      const CYAN_SOFT = [56, 189, 248];
+      const CYAN_BG = [240, 249, 255];
+      const SLATE_BG = [248, 250, 252];
+      const TEXT_DARK = [30, 41, 59];
+      const TEXT_MUTED = [100, 116, 139];
+      const BORDER_LIGHT = [226, 232, 240];
+
+      // Preload logo + figures in parallel
+      const logoSrc =
+        (document.getElementById("brand-logo-header") &&
+          document.getElementById("brand-logo-header").src) ||
+        "logo.png";
+
+      const rawFigures = Array.isArray(data.figures) ? data.figures : [];
+      const [logoDataUrl, loadedFigures] = await Promise.all([
+        loadCircularLogo(logoSrc),
+        Promise.all(
+          rawFigures.map(async (fig) => {
+            const imgObj = fig.url ? await loadFigureAsJpeg(fig.url) : null;
+            return { fig, imgObj };
+          })
+        )
+      ]);
+
+      const validFigures = loadedFigures.filter((item) => item.imgObj !== null);
+
+      let y = TOP_Y;
+
+      function ensureSpace(neededMm) {
+        if (y + neededMm > BOTTOM_Y) {
+          doc.addPage();
+          y = TOP_Y;
+          return true;
+        }
+        return false;
+      }
+
+      function drawSectionHeader(label, accentRgb) {
+        ensureSpace(14);
+        y += 2;
+        doc.setFillColor(OBSIDIAN[0], OBSIDIAN[1], OBSIDIAN[2]);
+        doc.roundedRect(MARGIN, y, CONTENT_W, 8.5, 1.8, 1.8, "F");
+
+        doc.setFillColor(accentRgb[0], accentRgb[1], accentRgb[2]);
+        doc.rect(MARGIN, y, 2.6, 8.5, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.5);
+        doc.setTextColor(255, 255, 255);
+        doc.text(sanitizeText(label).toUpperCase(), MARGIN + 6, y + 5.7);
+        y += 12;
+      }
+
+      // =====================================================================
+      // 1. HERO TOPIC CARD
+      // =====================================================================
+      const topicTitle = sanitizeText(data.title || "BDS Study Notes");
+      const yearLabel = sanitizeText(data.year || "BDS Curriculum");
+      const subjectLabel = sanitizeText(data.subject || "Dental Science");
+      const dateStr = new Date().toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(17);
+      const titleLines = doc.splitTextToSize(topicTitle, CONTENT_W - 12);
+      const heroH = 14 + titleLines.length * 7.2;
+
+      doc.setFillColor(SLATE_BG[0], SLATE_BG[1], SLATE_BG[2]);
+      doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(MARGIN, y, CONTENT_W, heroH, 2.5, 2.5, "FD");
+
+      doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.rect(MARGIN, y, 2.8, heroH, "F");
+
+      // Badges line
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7.5);
+      doc.setTextColor(GOLD_DARK[0], GOLD_DARK[1], GOLD_DARK[2]);
+      doc.text(`${yearLabel.toUpperCase()}   |   ${subjectLabel.toUpperCase()}`, MARGIN + 6.5, y + 6.5);
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(TEXT_MUTED[0], TEXT_MUTED[1], TEXT_MUTED[2]);
+      doc.text(`Generated: ${dateStr}`, PAGE_W - MARGIN - 4, y + 6.5, { align: "right" });
+
+      // Main Title
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(17);
+      doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+      doc.text(titleLines, MARGIN + 6.5, y + 14.5);
+
+      y += heroH + 5;
+
+      // =====================================================================
+      // 2. TEXTBOOK CITATIONS CALLOUT
+      // =====================================================================
+      const sources = (data.sources || []).map(sanitizeText).filter(Boolean);
+      if (sources.length > 0) {
+        const citeText = sources.join("   |   ");
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        const citeLines = doc.splitTextToSize(citeText, CONTENT_W - 10);
+        const citeH = 8.5 + citeLines.length * 4.3;
+
+        ensureSpace(citeH + 4);
+        doc.setFillColor(GOLD_BG[0], GOLD_BG[1], GOLD_BG[2]);
+        doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+        doc.setLineWidth(0.3);
+        doc.roundedRect(MARGIN, y, CONTENT_W, citeH, 2, 2, "FD");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(GOLD_DARK[0], GOLD_DARK[1], GOLD_DARK[2]);
+        doc.text("TEXTBOOK CITATIONS & PAGE REFERENCES", MARGIN + 4.5, y + 5.2);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+        doc.text(citeLines, MARGIN + 4.5, y + 10);
+
+        y += citeH + 5;
+      }
+
+      // =====================================================================
+      // 3. CONCEPT OVERVIEW
+      // =====================================================================
+      const overview = sanitizeText(data.overview);
+      if (overview) {
+        drawSectionHeader("Concept Overview", CYAN_SOFT);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+        const ovLines = doc.splitTextToSize(overview, CONTENT_W - 4);
+        for (const line of ovLines) {
+          ensureSpace(5.5);
+          doc.text(line, MARGIN + 2, y);
+          y += 5.0;
+        }
+        y += 4;
+      }
+
+      // =====================================================================
+      // 4. UNIVERSITY EXAM ANSWER FORMAT (LAQ / SAQ)
+      // =====================================================================
+      const examPoints = (data.examPoints || []).map(sanitizeText).filter(Boolean);
+      if (examPoints.length > 0) {
+        drawSectionHeader("University Exam Notes (LAQ / SAQ High-Yield Points)", GOLD);
+
+        for (const pt of examPoints) {
+          const colonIdx = pt.indexOf(":");
+          const hasHeading = colonIdx > 0 && colonIdx < 52;
+          const heading = hasHeading ? pt.slice(0, colonIdx + 1) : "";
+          const body = hasHeading ? pt.slice(colonIdx + 1).trim() : pt;
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.8);
+          const fullLines = hasHeading
+            ? doc.splitTextToSize(`${heading} ${body}`, CONTENT_W - 8)
+            : doc.splitTextToSize(pt, CONTENT_W - 8);
+
+          const blockH = fullLines.length * 4.8 + 3;
+          ensureSpace(Math.min(blockH, 28));
+
+          // Gold bullet dot
+          doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+          doc.circle(MARGIN + 2.5, y - 1.2, 1.1, "F");
+
+          if (hasHeading) {
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.8);
+            doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+            const headingW = doc.getTextWidth(heading + " ");
+
+            if (headingW < CONTENT_W - 22) {
+              const firstLineMaxW = CONTENT_W - 8 - headingW;
+              const words = body.split(/\s+/);
+              let firstRest = "";
+              let cutIdx = 0;
+              doc.setFont("helvetica", "normal");
+              for (let i = 0; i < words.length; i++) {
+                const candidate = firstRest ? firstRest + " " + words[i] : words[i];
+                if (doc.getTextWidth(candidate) <= firstLineMaxW) {
+                  firstRest = candidate;
+                  cutIdx = i + 1;
+                } else {
+                  break;
+                }
+              }
+              doc.setFont("helvetica", "bold");
+              doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+              doc.text(heading, MARGIN + 6.5, y);
+
+              doc.setFont("helvetica", "normal");
+              doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+              if (firstRest) {
+                doc.text(firstRest, MARGIN + 6.5 + headingW, y);
+              }
+              y += 4.9;
+
+              const remaining = words.slice(cutIdx).join(" ");
+              if (remaining) {
+                const remLines = doc.splitTextToSize(remaining, CONTENT_W - 8);
+                for (const rl of remLines) {
+                  ensureSpace(5.2);
+                  doc.text(rl, MARGIN + 6.5, y);
+                  y += 4.9;
+                }
+              }
+            } else {
+              const hLines = doc.splitTextToSize(heading, CONTENT_W - 8);
+              for (const hl of hLines) {
+                ensureSpace(5.2);
+                doc.text(hl, MARGIN + 6.5, y);
+                y += 4.9;
+              }
+              doc.setFont("helvetica", "normal");
+              doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+              const bLines = doc.splitTextToSize(body, CONTENT_W - 8);
+              for (const bl of bLines) {
+                ensureSpace(5.2);
+                doc.text(bl, MARGIN + 6.5, y);
+                y += 4.9;
+              }
+            }
+          } else {
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+            for (const fl of fullLines) {
+              ensureSpace(5.2);
+              doc.text(fl, MARGIN + 6.5, y);
+              y += 4.9;
+            }
+          }
+          y += 2.2;
+        }
+        y += 3;
+      }
+
+      // =====================================================================
+      // 5. VIVA VOCE & CLINICAL PEARLS
+      // =====================================================================
+      const vivaPearls = (data.vivaPearls || []).map(sanitizeText).filter(Boolean);
+      if (vivaPearls.length > 0) {
+        drawSectionHeader("Viva Voce & Clinical Pearls", CYAN_SOFT);
+
+        for (const pearl of vivaPearls) {
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          const pLines = doc.splitTextToSize(pearl, CONTENT_W - 10);
+          const cardH = pLines.length * 4.7 + 6.5;
+
+          ensureSpace(cardH + 3);
+          doc.setFillColor(CYAN_BG[0], CYAN_BG[1], CYAN_BG[2]);
+          doc.setDrawColor(186, 230, 253);
+          doc.setLineWidth(0.25);
+          doc.roundedRect(MARGIN, y, CONTENT_W, cardH, 1.8, 1.8, "FD");
+
+          doc.setFillColor(CYAN[0], CYAN[1], CYAN[2]);
+          doc.rect(MARGIN, y, 2.2, cardH, "F");
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+          doc.text(pLines, MARGIN + 5.5, y + 5.5);
+
+          y += cardH + 3;
+        }
+        y += 3;
+      }
+
+      // =====================================================================
+      // 6. TEXTBOOK FIGURES & DIAGRAMS (2-COLUMN LUXURY GALLERY)
+      // =====================================================================
+      if (validFigures.length > 0) {
+        drawSectionHeader(`Textbook Figures & Diagrams (${validFigures.length})`, GOLD);
+
+        const GAP = 6;
+        const COL_W = (CONTENT_W - GAP) / 2;
+        const MAX_IMG_H = 56;
+
+        for (let i = 0; i < validFigures.length; i += 2) {
+          const rowItems = validFigures.slice(i, i + 2);
+          const isSingle = rowItems.length === 1;
+          const cardW = isSingle ? Math.min(130, CONTENT_W) : COL_W;
+
+          // Compute uniform card height for the row
+          let rowH = 0;
+          const prepared = rowItems.map(({ fig, imgObj }) => {
+            const innerW = cardW - 6;
+            const aspect = imgObj.width / imgObj.height;
+            let drawW = innerW;
+            let drawH = drawW / aspect;
+            if (drawH > MAX_IMG_H) {
+              drawH = MAX_IMG_H;
+              drawW = drawH * aspect;
+            }
+            const titleStr = sanitizeText(fig.title || "Textbook Figure");
+            const srcStr = sanitizeText(fig.source || "");
+            const capStr = sanitizeText(fig.caption || "");
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(8.2);
+            const tLines = doc.splitTextToSize(titleStr, innerW).slice(0, 2);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(7.2);
+            const sLines = srcStr ? doc.splitTextToSize(srcStr, innerW).slice(0, 1) : [];
+            const cLines = capStr ? doc.splitTextToSize(capStr, innerW).slice(0, 3) : [];
+
+            const textBlockH =
+              tLines.length * 3.8 + sLines.length * 3.4 + cLines.length * 3.4 + 4;
+            const totalH = drawH + textBlockH + 8;
+            if (totalH > rowH) rowH = totalH;
+
+            return { imgObj, drawW, drawH, tLines, sLines, cLines };
+          });
+
+          ensureSpace(rowH + 5);
+
+          prepared.forEach((item, idx) => {
+            const startX = isSingle
+              ? MARGIN + (CONTENT_W - cardW) / 2
+              : MARGIN + idx * (COL_W + GAP);
+
+            // Outer Card
+            doc.setFillColor(255, 255, 255);
+            doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+            doc.setLineWidth(0.35);
+            doc.roundedRect(startX, y, cardW, rowH, 2, 2, "FD");
+
+            // Image frame
+            const imgX = startX + (cardW - item.drawW) / 2;
+            const imgY = y + 3.5;
+            doc.addImage(item.imgObj.dataUrl, "JPEG", imgX, imgY, item.drawW, item.drawH);
+
+            // Divider line under image
+            let ty = imgY + item.drawH + 3;
+            doc.setDrawColor(BORDER_LIGHT[0], BORDER_LIGHT[1], BORDER_LIGHT[2]);
+            doc.setLineWidth(0.2);
+            doc.line(startX + 3, ty - 1.5, startX + cardW - 3, ty - 1.5);
+
+            // Title
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(8.2);
+            doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+            doc.text(item.tLines, startX + 3, ty + 1.5);
+            ty += item.tLines.length * 3.8 + 1.5;
+
+            // Source
+            if (item.sLines.length > 0) {
+              doc.setFont("helvetica", "bold");
+              doc.setFontSize(7.0);
+              doc.setTextColor(CYAN[0], CYAN[1], CYAN[2]);
+              doc.text(item.sLines, startX + 3, ty + 1);
+              ty += item.sLines.length * 3.5;
+            }
+
+            // Caption
+            if (item.cLines.length > 0) {
+              doc.setFont("helvetica", "normal");
+              doc.setFontSize(7.2);
+              doc.setTextColor(TEXT_MUTED[0], TEXT_MUTED[1], TEXT_MUTED[2]);
+              doc.text(item.cLines, startX + 3, ty + 1.2);
+            }
+          });
+
+          y += rowH + 5;
+        }
+        y += 2;
+      }
+
+      // =====================================================================
+      // 7. NEET-MDS / UNIVERSITY MCQ DRILL (WITH ANSWER KEY)
+      // =====================================================================
+      const mcqs = Array.isArray(data.mcqs) ? data.mcqs : [];
+      if (mcqs.length > 0) {
+        drawSectionHeader("NEET-MDS & University MCQ Drill (With Key)", CYAN_SOFT);
+
+        mcqs.forEach((m, idx) => {
+          const qText = `Q${idx + 1}. ${sanitizeText(m.q || "")}`;
+          const opts = (m.options || []).map((o, oi) => `${String.fromCharCode(65 + oi)}. ${sanitizeText(o)}`);
+          const ansIdx = Number.isInteger(m.answer) ? m.answer : (Number.isInteger(m.correct) ? m.correct : 0);
+          const ansLetter = String.fromCharCode(65 + Math.max(0, Math.min(3, ansIdx)));
+          const expText = `Answer: Option ${ansLetter}${m.explanation ? " - " + sanitizeText(m.explanation) : ""}`;
+
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9.5);
+          const qLines = doc.splitTextToSize(qText, CONTENT_W - 8);
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.0);
+          const optBlocks = opts.map((o) => doc.splitTextToSize(o, CONTENT_W - 12));
+          const optLinesTotal = optBlocks.reduce((acc, lines) => acc + lines.length, 0);
+
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(8.5);
+          const expLines = doc.splitTextToSize(expText, CONTENT_W - 10);
+
+          const cardH = qLines.length * 4.6 + optLinesTotal * 4.3 + expLines.length * 4.2 + 12;
+          ensureSpace(cardH + 3);
+
+          doc.setFillColor(SLATE_BG[0], SLATE_BG[1], SLATE_BG[2]);
+          doc.setDrawColor(BORDER_LIGHT[0], BORDER_LIGHT[1], BORDER_LIGHT[2]);
+          doc.setLineWidth(0.3);
+          doc.roundedRect(MARGIN, y, CONTENT_W, cardH, 2, 2, "FD");
+
+          let my = y + 5.5;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9.5);
+          doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+          doc.text(qLines, MARGIN + 4, my);
+          my += qLines.length * 4.6 + 1.5;
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.0);
+          doc.setTextColor(TEXT_DARK[0], TEXT_DARK[1], TEXT_DARK[2]);
+          optBlocks.forEach((lines) => {
+            doc.text(lines, MARGIN + 7, my);
+            my += lines.length * 4.3;
+          });
+
+          my += 1.5;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(8.4);
+          doc.setTextColor(GOLD_DARK[0], GOLD_DARK[1], GOLD_DARK[2]);
+          doc.text(expLines, MARGIN + 4, my);
+
+          y += cardH + 3.5;
+        });
+      }
+
+      // =====================================================================
+      // 8. STAMP LUXURY HEADER & FOOTER ON EVERY PAGE
+      // =====================================================================
+      const totalPages = doc.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p);
+
+        // --- TOP HEADER BAR ---
+        doc.setFillColor(OBSIDIAN[0], OBSIDIAN[1], OBSIDIAN[2]);
+        doc.rect(0, 0, PAGE_W, 22, "F");
+
+        // Gold + Cyan accent lines under header
+        doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+        doc.rect(0, 21.3, PAGE_W, 0.8, "F");
+        doc.setFillColor(CYAN_SOFT[0], CYAN_SOFT[1], CYAN_SOFT[2]);
+        doc.rect(0, 22.1, PAGE_W, 0.35, "F");
+
+        // Circular Logo
+        let brandX = MARGIN;
+        if (logoDataUrl) {
+          doc.addImage(logoDataUrl, "PNG", MARGIN, 3.5, 14.5, 14.5);
+          brandX = MARGIN + 18;
+        }
+
+        // Brand Name & Subtitle
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12.5);
+        doc.setTextColor(GOLD_SOFT[0], GOLD_SOFT[1], GOLD_SOFT[2]);
+        doc.text(SITE_BRAND, brandX, 10.5);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.8);
+        doc.setTextColor(186, 230, 253);
+        doc.text(SITE_SUB, brandX, 15.6);
+
+        // Right-aligned Subject Pill
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.2);
+        doc.setTextColor(GOLD_SOFT[0], GOLD_SOFT[1], GOLD_SOFT[2]);
+        doc.text(yearLabel.toUpperCase(), PAGE_W - MARGIN, 10.2, { align: "right" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.8);
+        doc.setTextColor(203, 213, 225);
+        doc.text(subjectLabel, PAGE_W - MARGIN, 15.2, { align: "right" });
+
+        // --- BOTTOM FOOTER BAR ---
+        doc.setFillColor(OBSIDIAN[0], OBSIDIAN[1], OBSIDIAN[2]);
+        doc.rect(0, PAGE_H - 13, PAGE_W, 13, "F");
+
+        doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+        doc.rect(0, PAGE_H - 13.5, PAGE_W, 0.6, "F");
+
+        let footX = MARGIN;
+        if (logoDataUrl) {
+          doc.addImage(logoDataUrl, "PNG", MARGIN, PAGE_H - 10.6, 8, 8);
+          footX = MARGIN + 10.5;
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(GOLD_SOFT[0], GOLD_SOFT[1], GOLD_SOFT[2]);
+        doc.text("CONQUERING BDS by Pratham Salunke", footX, PAGE_H - 7.3);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.8);
+        doc.setTextColor(148, 163, 184);
+        doc.text(SITE_URL, footX, PAGE_H - 3.6);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(GOLD_SOFT[0], GOLD_SOFT[1], GOLD_SOFT[2]);
+        doc.text(`Page ${p} of ${totalPages}`, PAGE_W - MARGIN, PAGE_H - 5.4, { align: "right" });
+      }
+
+      const slug = topicTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 50) || "bds-notes";
+
+      doc.save(`${slug}-conquering-bds.pdf`);
+      notify(`PDF downloaded (${totalPages} pages, ${validFigures.length} figures)!`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      notify("PDF generation failed — please try again.");
+    } finally {
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = originalHtml;
+      }
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("#btn-download-pdf");
+    if (btn) {
+      e.preventDefault();
+      generateLuxuryBDSPdf(btn);
+    }
+  });
+})();
+</script>
+<!-- CBDS_PDF_ENGINE_END -->
 </body>
 </html>
