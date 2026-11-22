@@ -1149,7 +1149,7 @@
       activeCurriculumYear: "1",
       selectedMode: "concept",
       activeLayer: "enamel",
-      backendUrl: "",
+      backendUrl: "https://conqueringbds.pythonanywhere.com",
       bookmarks: [],
       currentResult: null
     };
@@ -1158,7 +1158,7 @@
     function loadSavedState() {
       try {
         const savedUrl = localStorage.getItem("cbds_backend_url");
-        if (savedUrl) state.backendUrl = savedUrl;
+        if (savedUrl && savedUrl.trim().startsWith("https://")) state.backendUrl = savedUrl.trim();
         const savedBookmarks = JSON.parse(localStorage.getItem("cbds_bookmarks") || "[]");
         if (Array.isArray(savedBookmarks)) state.bookmarks = savedBookmarks;
       } catch (e) {
