@@ -2684,5 +2684,649 @@
 })();
 </script>
 <!-- CBDS_PDF_ENGINE_END -->
+
+<!-- CBDS_BOOK_FILTER_START -->
+<style>
+  #cbds-book-filter-wrap {
+    margin: 12px 0 14px 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(11, 18, 34, 0.92), rgba(7, 13, 25, 0.96));
+    border: 1px solid rgba(212, 175, 55, 0.32);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  .cbds-bf-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .cbds-bf-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #F5DF9A;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cbds-bf-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: stretch;
+  }
+  #cbds-book-select {
+    flex: 1 1 220px;
+    min-width: 0;
+    background: #070D19;
+    color: #F8FAFC;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+  }
+  #cbds-book-select:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.22);
+  }
+  #cbds-book-select optgroup {
+    background: #0B1222;
+    color: #F5DF9A;
+    font-weight: 700;
+  }
+  #cbds-book-select option {
+    background: #070D19;
+    color: #E2E8F0;
+    font-weight: 500;
+  }
+  .cbds-vault-btn {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.08));
+    color: #F5DF9A;
+    border: 1px solid rgba(212, 175, 55, 0.55);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .cbds-vault-btn:hover {
+    background: rgba(212, 175, 55, 0.28);
+    border-color: #F5DF9A;
+  }
+  #cbds-active-book-pill {
+    display: none;
+    margin-top: 9px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.38);
+    color: #BAE6FD;
+    font-size: 12px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  #cbds-active-book-pill.is-visible {
+    display: flex;
+  }
+  .cbds-clear-pill-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #F8FAFC;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  /* Vault Modal */
+  #cbds-vault-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(2, 6, 15, 0.84);
+    backdrop-filter: blur(8px);
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  #cbds-vault-modal.is-open {
+    display: flex;
+  }
+  .cbds-vault-card {
+    width: 100%;
+    max-width: 780px;
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    background: #070D19;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  }
+  .cbds-vault-head {
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(135deg, #0B1325, #070D19);
+  }
+  .cbds-vault-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #F5DF9A;
+    letter-spacing: 0.03em;
+  }
+  .cbds-vault-sub {
+    margin: 3px 0 0 0;
+    font-size: 12px;
+    color: #94A3B8;
+  }
+  .cbds-vault-close {
+    background: rgba(255, 255, 255, 0.08);
+    color: #E2E8F0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .cbds-vault-controls {
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #cbds-vault-search {
+    width: 100%;
+    box-sizing: border-box;
+    background: #0D1628;
+    color: #F8FAFC;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    outline: none;
+  }
+  .cbds-vault-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .cbds-vault-tab {
+    background: rgba(255, 255, 255, 0.05);
+    color: #CBD5E1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .cbds-vault-tab.active {
+    background: rgba(212, 175, 55, 0.22);
+    color: #F5DF9A;
+    border-color: #D4AF37;
+  }
+  .cbds-vault-list {
+    padding: 14px 18px 18px 18px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px;
+  }
+  .cbds-book-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    transition: border-color 0.2s ease;
+  }
+  .cbds-book-card.selected {
+    border-color: #D4AF37;
+    background: rgba(212, 175, 55, 0.09);
+  }
+  .cbds-book-meta {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #38BDF8;
+  }
+  .cbds-book-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #F8FAFC;
+    line-height: 1.3;
+  }
+  .cbds-book-stats {
+    font-size: 11px;
+    color: #94A3B8;
+  }
+  .cbds-book-pick-btn {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    background: rgba(212, 175, 55, 0.14);
+    color: #F5DF9A;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .cbds-book-pick-btn:hover {
+    background: rgba(212, 175, 55, 0.28);
+  }
+</style>
+
+<script>
+(function () {
+  const DEFAULT_API = "https" + "://" + "conqueringbds.pythonanywhere" + ".com";
+  const YEAR_NAMES = {
+    1: "1st Year BDS",
+    2: "2nd Year BDS",
+    3: "3rd Year BDS",
+    4: "Final (4th) Year BDS"
+  };
+
+  let allBooks = [];
+  let selectedBookId = "";
+  let vaultYearFilter = "all";
+  let yearSelectEl = null;
+  let subjectSelectEl = null;
+
+  window.__cbdsSelectedBookId = "";
+
+  function getApiBase() {
+    let url = DEFAULT_API;
+    try {
+      if (typeof state !== "undefined" && state.backendUrl && state.backendUrl.trim()) {
+        url = state.backendUrl.trim();
+      } else {
+        const saved = localStorage.getItem("cbds_backend_url");
+        if (saved && saved.trim().startsWith("http")) url = saved.trim();
+      }
+    } catch (e) {}
+    return url.replace(/\/+$/, "");
+  }
+
+  function esc(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function notify(msg) {
+    if (typeof showToast === "function") showToast(msg);
+  }
+
+  // 1. Intercept outgoing Oracle POST requests to automatically attach book_id
+  if (!window.__cbdsFetchHooked) {
+    window.__cbdsFetchHooked = true;
+    const origFetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      try {
+        const urlStr = typeof input === "string" ? input : (input && input.url) || "";
+        const method = ((init && init.method) || "GET").toUpperCase();
+        const apiBase = getApiBase();
+        const isBackendPost =
+          method === "POST" &&
+          (urlStr.includes("pythonanywhere") || (apiBase && urlStr.startsWith(apiBase)));
+
+        if (isBackendPost && init && typeof init.body === "string") {
+          const payload = JSON.parse(init.body);
+          if (selectedBookId) {
+            payload.book_id = selectedBookId;
+            const chosen = allBooks.find((b) => b.book_id === selectedBookId);
+            if (chosen) {
+              payload.year = String(chosen.year);
+              payload.subject = chosen.subject;
+            }
+          } else {
+            payload.book_id = "";
+          }
+          init = Object.assign({}, init, { body: JSON.stringify(payload) });
+        }
+      } catch (err) {
+        // Leave request untouched on parse error
+      }
+      return origFetch(input, init);
+    };
+  }
+
+  function detectExistingControls() {
+    const selects = Array.from(document.querySelectorAll("select"));
+    for (const sel of selects) {
+      if (sel.id === "cbds-book-select") continue;
+      const txt = (sel.id + " " + sel.name + " " + sel.innerText).toLowerCase();
+      if (!yearSelectEl && (txt.includes("1st year") || txt.includes("year 1") || txt.includes("all years"))) {
+        yearSelectEl = sel;
+      } else if (!subjectSelectEl && (txt.includes("all subjects") || txt.includes("oral pathology") || txt.includes("anatomy"))) {
+        subjectSelectEl = sel;
+      }
+    }
+  }
+
+  function getSelectedYearNum() {
+    if (!yearSelectEl) return null;
+    const val = String(yearSelectEl.value || "").toLowerCase();
+    if (!val || val.includes("all")) return null;
+    const m = val.match(/[1-4]/);
+    return m ? parseInt(m[0], 10) : null;
+  }
+
+  function getSelectedSubjectText() {
+    if (!subjectSelectEl) return "";
+    const val = String(subjectSelectEl.value || "").trim();
+    if (!val || val.toLowerCase().includes("all")) return "";
+    return val;
+  }
+
+  function subjectsLooselyMatch(selectedSub, bookSub) {
+    const clean = (s) =>
+      String(s || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length > 2 && !["and", "the", "general", "dental", "oral", "bds"].includes(w));
+    const a = clean(selectedSub);
+    const b = clean(bookSub);
+    if (!a.length || !b.length) return true;
+    return a.some((w) => b.some((bw) => bw.includes(w) || w.includes(bw)));
+  }
+
+  function getFilteredBooksForDropdown() {
+    const yr = getSelectedYearNum();
+    const sub = getSelectedSubjectText();
+
+    let list = allBooks.slice();
+    if (yr) list = list.filter((b) => Number(b.year) === yr);
+    if (sub) {
+      const subMatched = list.filter((b) => subjectsLooselyMatch(sub, b.subject));
+      if (subMatched.length > 0) list = subMatched;
+    }
+    return list;
+  }
+
+  function renderBookDropdown() {
+    const sel = document.getElementById("cbds-book-select");
+    const countEl = document.getElementById("cbds-bf-count");
+    if (!sel) return;
+
+    const list = getFilteredBooksForDropdown();
+    if (countEl) {
+      countEl.textContent = allBooks.length
+        ? `${list.length} of ${allBooks.length} textbooks`
+        : "Loading textbooks...";
+    }
+
+    const byYear = { 1: [], 2: [], 3: [], 4: [] };
+    list.forEach((b) => {
+      if (byYear[b.year]) byYear[b.year].push(b);
+    });
+
+    let html = `<option value="">All Indexed Textbooks (${list.length} Books)</option>`;
+    [1, 2, 3, 4].forEach((yr) => {
+      if (!byYear[yr].length) return;
+      html += `<optgroup label="${esc(YEAR_NAMES[yr])}">`;
+      byYear[yr].forEach((b) => {
+        const label = `${b.book_name} — ${b.subject} (${Number(b.total_pages || 0).toLocaleString()}p)`;
+        const selAttr = b.book_id === selectedBookId ? " selected" : "";
+        html += `<option value="${esc(b.book_id)}"${selAttr}>${esc(label)}</option>`;
+      });
+      html += `</optgroup>`;
+    });
+
+    sel.innerHTML = html;
+
+    // Keep active selection if still in full library
+    if (selectedBookId && !list.some((b) => b.book_id === selectedBookId)) {
+      const chosen = allBooks.find((b) => b.book_id === selectedBookId);
+      if (chosen) {
+        const opt = document.createElement("option");
+        opt.value = chosen.book_id;
+        opt.textContent = `[Active] ${chosen.book_name} — ${chosen.subject}`;
+        opt.selected = true;
+        sel.insertBefore(opt, sel.children[1] || null);
+      }
+    }
+    updateActivePill();
+  }
+
+  function updateActivePill() {
+    const pill = document.getElementById("cbds-active-book-pill");
+    const pillTxt = document.getElementById("cbds-active-book-text");
+    if (!pill || !pillTxt) return;
+
+    const chosen = allBooks.find((b) => b.book_id === selectedBookId);
+    if (chosen) {
+      pillTxt.innerHTML = `Strictly searching inside <strong style="color:#F5DF9A;">${esc(chosen.book_name)}</strong> (${esc(chosen.subject)}, Year ${chosen.year})`;
+      pill.classList.add("is-visible");
+    } else {
+      pill.classList.remove("is-visible");
+    }
+  }
+
+  function setSelectedBook(bookId, silent) {
+    selectedBookId = bookId || "";
+    window.__cbdsSelectedBookId = selectedBookId;
+    renderBookDropdown();
+    renderVaultList();
+    if (!silent) {
+      const chosen = allBooks.find((b) => b.book_id === selectedBookId);
+      notify(chosen ? `Locked search to ${chosen.book_name}` : "Searching across all indexed textbooks");
+    }
+  }
+
+  function renderVaultList() {
+    const container = document.getElementById("cbds-vault-list");
+    const sub = document.getElementById("cbds-vault-sub");
+    if (!container) return;
+
+    const q = ((document.getElementById("cbds-vault-search") || {}).value || "").trim().toLowerCase();
+    let list = allBooks.slice();
+    if (vaultYearFilter !== "all") {
+      list = list.filter((b) => String(b.year) === String(vaultYearFilter));
+    }
+    if (q) {
+      list = list.filter(
+        (b) =>
+          (b.book_name || "").toLowerCase().includes(q) ||
+          (b.subject || "").toLowerCase().includes(q)
+      );
+    }
+
+    if (sub) {
+      const totalPages = allBooks.reduce((a, b) => a + Number(b.total_pages || 0), 0);
+      const totalFigs = allBooks.reduce((a, b) => a + Number(b.images_extracted || 0), 0);
+      sub.textContent = `${allBooks.length} Standard Textbooks  •  ${totalPages.toLocaleString()} Pages  •  ${totalFigs.toLocaleString()} Diagrams`;
+    }
+
+    if (!list.length) {
+      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:24px;font-size:13px;">No textbooks match your filter.</div>`;
+      return;
+    }
+
+    container.innerHTML = list
+      .map((b) => {
+        const isSel = b.book_id === selectedBookId;
+        return `<div class="cbds-book-card ${isSel ? "selected" : ""}">
+          <div>
+            <div class="cbds-book-meta">Year ${b.year} • ${esc(b.subject)}</div>
+            <div class="cbds-book-name">${esc(b.book_name)}</div>
+            <div class="cbds-book-stats">${Number(b.total_pages || 0).toLocaleString()} pages • ${Number(b.images_extracted || 0).toLocaleString()} figures</div>
+          </div>
+          <button type="button" class="cbds-book-pick-btn" data-book-id="${esc(b.book_id)}">
+            ${isSel ? "✓ Active Filter (Tap to Keep)" : "Search Only This Book"}
+          </button>
+        </div>`;
+      })
+      .join("");
+  }
+
+  function injectBookFilterUI() {
+    if (document.getElementById("cbds-book-filter-wrap")) return;
+    detectExistingControls();
+
+    const wrap = document.createElement("div");
+    wrap.id = "cbds-book-filter-wrap";
+    wrap.innerHTML = `
+      <div class="cbds-bf-top">
+        <span class="cbds-bf-label">&#128218; Textbook Filter</span>
+        <span id="cbds-bf-count" style="font-size:11px;color:#94A3B8;">Loading library...</span>
+      </div>
+      <div class="cbds-bf-row">
+        <select id="cbds-book-select" aria-label="Filter by specific BDS textbook">
+          <option value="">All Indexed Textbooks</option>
+        </select>
+        <button type="button" id="cbds-open-vault-btn" class="cbds-vault-btn">Browse All Books</button>
+      </div>
+      <div id="cbds-active-book-pill">
+        <span id="cbds-active-book-text"></span>
+        <button type="button" id="cbds-clear-book-btn" class="cbds-clear-pill-btn">Clear &times;</button>
+      </div>
+    `;
+
+    // Place cleanly right below the existing Year/Subject selector row, or above the Oracle input
+    const anchorSelect = subjectSelectEl || yearSelectEl;
+    if (anchorSelect && anchorSelect.parentElement && anchorSelect.parentElement.parentElement) {
+      const rowParent = anchorSelect.parentElement.parentElement;
+      rowParent.insertAdjacentElement("afterend", wrap);
+    } else {
+      const searchInput =
+        document.querySelector('input[type="search"], input[id*="query"], input[id*="search"], input[placeholder*="topic" i], input[placeholder*="Ask" i]') ||
+        document.querySelector("main input");
+      if (searchInput && searchInput.parentElement) {
+        searchInput.parentElement.insertAdjacentElement("beforebegin", wrap);
+      } else {
+        document.body.prepend(wrap);
+      }
+    }
+
+    // Create Vault Modal
+    const modal = document.createElement("div");
+    modal.id = "cbds-vault-modal";
+    modal.innerHTML = `
+      <div class="cbds-vault-card" role="dialog" aria-modal="true" aria-label="Indexed BDS Textbook Vault">
+        <div class="cbds-vault-head">
+          <div>
+            <h3 class="cbds-vault-title">CONQUERING BDS — TEXTBOOK VAULT</h3>
+            <p id="cbds-vault-sub" class="cbds-vault-sub">Loading indexed library...</p>
+          </div>
+          <button type="button" id="cbds-vault-close" class="cbds-vault-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="cbds-vault-controls">
+          <input id="cbds-vault-search" type="text" placeholder="Search textbook or subject (e.g., Shafer, Carranza, Chaurasia, Pharmacology)..." />
+          <div class="cbds-vault-tabs">
+            <button type="button" class="cbds-vault-tab active" data-yr="all">All Years</button>
+            <button type="button" class="cbds-vault-tab" data-yr="1">1st Year</button>
+            <button type="button" class="cbds-vault-tab" data-yr="2">2nd Year</button>
+            <button type="button" class="cbds-vault-tab" data-yr="3">3rd Year</button>
+            <button type="button" class="cbds-vault-tab" data-yr="4">Final Year</button>
+          </div>
+        </div>
+        <div id="cbds-vault-list" class="cbds-vault-list"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Event bindings
+    document.getElementById("cbds-book-select").addEventListener("change", (e) => {
+      setSelectedBook(e.target.value, false);
+    });
+    document.getElementById("cbds-clear-book-btn").addEventListener("click", () => {
+      setSelectedBook("", false);
+    });
+    document.getElementById("cbds-open-vault-btn").addEventListener("click", () => {
+      modal.classList.add("is-open");
+      renderVaultList();
+    });
+    document.getElementById("cbds-vault-close").addEventListener("click", () => {
+      modal.classList.remove("is-open");
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("is-open");
+    });
+    document.getElementById("cbds-vault-search").addEventListener("input", renderVaultList);
+    modal.querySelectorAll(".cbds-vault-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        modal.querySelectorAll(".cbds-vault-tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        vaultYearFilter = tab.getAttribute("data-yr") || "all";
+        renderVaultList();
+      });
+    });
+    document.getElementById("cbds-vault-list").addEventListener("click", (e) => {
+      const btn = e.target.closest(".cbds-book-pick-btn");
+      if (!btn) return;
+      const bId = btn.getAttribute("data-book-id");
+      setSelectedBook(bId, false);
+      modal.classList.remove("is-open");
+      const queryInput = document.querySelector('input[id*="query"], input[id*="search"], input[placeholder*="Ask" i], input[placeholder*="topic" i]');
+      if (queryInput) {
+        queryInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => queryInput.focus(), 300);
+      }
+    });
+
+    if (yearSelectEl) yearSelectEl.addEventListener("change", renderBookDropdown);
+    if (subjectSelectEl) subjectSelectEl.addEventListener("change", renderBookDropdown);
+  }
+
+  async function loadBooksFromBackend() {
+    try {
+      const res = await fetch(getApiBase() + "/api/books");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      allBooks = Array.isArray(data.books) ? data.books : [];
+      const openBtn = document.getElementById("cbds-open-vault-btn");
+      if (openBtn && allBooks.length) {
+        openBtn.textContent = `Browse ${allBooks.length} Books`;
+      }
+      renderBookDropdown();
+      renderVaultList();
+    } catch (err) {
+      const countEl = document.getElementById("cbds-bf-count");
+      if (countEl) countEl.textContent = "Backend offline — retry refresh";
+    }
+  }
+
+  function init() {
+    injectBookFilterUI();
+    loadBooksFromBackend();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+<!-- CBDS_BOOK_FILTER_END -->
 </body>
 </html>
